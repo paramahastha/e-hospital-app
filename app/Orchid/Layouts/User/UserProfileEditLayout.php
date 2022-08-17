@@ -13,7 +13,7 @@ use Orchid\Screen\Fields\Radio;
 use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Layouts\Rows;
 
-class UserEditLayout extends Rows
+class UserProfileEditLayout extends Rows
 {
     /**
      * Views.
@@ -34,7 +34,13 @@ class UserEditLayout extends Rows
                 ->max(255)
                 ->required()
                 ->title(__('Name'))
-                ->placeholder(__('Name')),            
+                ->placeholder(__('Name')),
+
+            Input::make('user.email')
+                ->type('email')
+                ->required()
+                ->title(__('Email'))
+                ->placeholder(__('Email')),
 
             DateTimer::make('user.userInfo.date_of_birth')
                 ->required()

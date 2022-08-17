@@ -6,10 +6,11 @@ namespace App\Orchid\Layouts\User;
 
 use Orchid\Platform\Models\User;
 use Orchid\Screen\Field;
+use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Password;
 use Orchid\Screen\Layouts\Rows;
 
-class UserPasswordLayout extends Rows
+class UserCredentialLayout extends Rows
 {
     /**
      * Views.
@@ -26,7 +27,14 @@ class UserPasswordLayout extends Rows
             : __('Enter the password to be set');
 
         return [
+            Input::make('user.email')
+                ->type('email')
+                ->required()
+                ->title(__('Email'))
+                ->placeholder(__('Email')),
+
             Password::make('user.password')
+                ->required(!$user->exists)
                 ->placeholder($placeholder)
                 ->title(__('Password')),
         ];

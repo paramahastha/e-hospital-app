@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\User;
 
+use App\Models\User;
+use App\Models\UserInfo;
 use App\Orchid\Layouts\User\ProfilePasswordLayout;
-use App\Orchid\Layouts\User\UserEditLayout;
+use App\Orchid\Layouts\User\UserProfileEditLayout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Orchid\Platform\Models\User;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
@@ -69,7 +70,7 @@ class UserProfileScreen extends Screen
     public function layout(): iterable
     {
         return [
-            Layout::block(UserEditLayout::class)
+            Layout::block(UserProfileEditLayout::class)
                 ->title(__('Profile Information'))
                 ->description(__("Update your account's profile information and email address."))
                 ->commands(
@@ -78,6 +79,7 @@ class UserProfileScreen extends Screen
                         ->icon('check')
                         ->method('save')
                 ),
+                
 
             Layout::block(ProfilePasswordLayout::class)
                 ->title(__('Update Password'))
@@ -101,9 +103,30 @@ class UserProfileScreen extends Screen
             'user.email' => [
                 'required',
                 Rule::unique(User::class, 'email')->ignore($request->user()),
-            ],
-        ]);
+            ],      
+            'user.date_of_birth' => 'before:today'      
+        ]);        
 
+        $userInfo =  $request->get('user')["userInfo"];        
+     
+        $dob = date('Y-m-d', strtotime($userInfo["date_of_birth"]));        
+
+        $userInfoData = [
+            'user_id' => $request->user()->id,                   
+            'date_of_birth' => $dob,
+            'identity_number' => $userInfo["identity_number"],
+            'gender' => $userInfo["gender"],
+            'phone_number' => $userInfo["phone_number"],
+            'address' => $userInfo["address"],
+            'photo' => $userInfo["photo"]
+        ];
+
+        if ($request->user()->userInfo == null) {
+            UserInfo::create($userInfoData);    
+        } else {
+            $request->user()->userInfo()->update($userInfoData);
+        }
+    
         $request->user()
             ->fill($request->get('user'))
             ->save();
@@ -116,6 +139,7 @@ class UserProfileScreen extends Screen
      */
     public function changePassword(Request $request): void
     {
+        
         $request->validate([
             'old_password' => 'required|password:web',
             'password'     => 'required|confirmed',

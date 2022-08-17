@@ -1,34 +1,38 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Orchid\Layouts\User;
+namespace App\Orchid\Layouts\DoctorManagement;
 
 use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Cropper;
 use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\Label;
 use Orchid\Screen\Fields\Radio;
 use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Layouts\Rows;
 
-class UserEditLayout extends Rows
+class DoctorEditLayout extends Rows
 {
     /**
-     * Views.
+     * Used to create the title of a group of form elements.
+     *
+     * @var string|null
+     */
+    protected $title;
+
+    /**
+     * Get the fields elements to be displayed.
      *
      * @return Field[]
      */
-    public function fields(): array
+    protected function fields(): iterable
     {
-        return [      
+        return [
             Cropper::make('user.userInfo.photo')
                 ->title('Photo')                
                 ->required()
                 ->width(500)
                 ->height(500),
-            
+
             Input::make('user.name')
                 ->type('text')
                 ->max(255)
@@ -55,7 +59,13 @@ class UserEditLayout extends Rows
             
             Radio::make('user.userInfo.gender')                 
                 ->placeholder('Female')
-                ->value('Female'),                
+                ->value('Female'),      
+                
+            Input::make('user.userInfo.sip_number')
+                ->required()
+                ->type('number')                
+                ->title('SIP Number')
+                ->placeholder(__('SIP Number')),
 
             Input::make('user.userInfo.phone_number')
                 ->type('number')                

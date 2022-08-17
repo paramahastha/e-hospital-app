@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Orchid\Platform\Models\User as Authenticatable;
+use Orchid\Platform\Models\User as OrchidUserModel;
 
-class User extends Authenticatable
+class User extends OrchidUserModel
 {
     /**
      * The attributes that are mass assignable.
@@ -13,7 +13,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
+        'code',
+        'email',        
         'password',
         'permissions',
     ];
@@ -47,6 +48,7 @@ class User extends Authenticatable
     protected $allowedFilters = [
         'id',
         'name',
+        'code',
         'email',
         'permissions',
     ];
@@ -63,4 +65,20 @@ class User extends Authenticatable
         'updated_at',
         'created_at',
     ];
+
+    /**
+     * get userInfo associated with the user.
+     */
+    public function userInfo()
+    {
+        return $this->hasOne(UserInfo::class);
+    }
+
+    /**
+     * get userInfo associated with the user.
+     */
+    public function userActivities()
+    {
+        return $this->hasMany(UserActivities::class);
+    }
 }

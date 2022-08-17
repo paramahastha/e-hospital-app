@@ -15,6 +15,10 @@ use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
+use App\Orchid\Screens\EmailSenderScreen;
+use App\Orchid\Screens\DoctorManagement\DoctorListScreen;
+use App\Orchid\Screens\DoctorManagement\DoctorEditScreen;
+use App\Orchid\Screens\Idea;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 
@@ -32,6 +36,13 @@ use Tabuna\Breadcrumbs\Trail;
 // Main
 Route::screen('/main', PlatformScreen::class)
     ->name('platform.main');
+// Route::screen('/main', ExampleScreen::class)
+//     ->name('platform.example')
+//     ->breadcrumbs(function (Trail $trail) {
+//         return $trail
+//             ->parent('platform.index')
+//             ->push('Dashboard');
+//     });
 
 // Platform > Profile
 Route::screen('profile', UserProfileScreen::class)
@@ -97,19 +108,56 @@ Route::screen('roles', RoleListScreen::class)
     });
 
 // Example...
-Route::screen('example', ExampleScreen::class)
-    ->name('platform.example')
+// Route::screen('/main', ExampleScreen::class)
+//     ->name('platform.example')
+//     ->breadcrumbs(function (Trail $trail) {
+//         return $trail
+//             ->parent('platform.index')
+//             ->push('Example screen');
+//     });
+
+// Route::screen('example-fields', ExampleFieldsScreen::class)->name('platform.example.fields');
+// Route::screen('example-layouts', ExampleLayoutsScreen::class)->name('platform.example.layouts');
+// Route::screen('example-charts', ExampleChartsScreen::class)->name('platform.example.charts');
+// Route::screen('example-editors', ExampleTextEditorsScreen::class)->name('platform.example.editors');
+// Route::screen('example-cards', ExampleCardsScreen::class)->name('platform.example.cards');
+// Route::screen('example-advanced', ExampleFieldsAdvancedScreen::class)->name('platform.example.advanced');
+
+// Route::screen('/email', EmailSenderScreen::class)
+//     ->name('platform.email')
+//     ->breadcrumbs(function (Trail $trail) {
+//         return $trail
+//             ->parent('platform.index')
+//             ->push('Email sender');
+//     });
+
+Route::screen('doctor-management', DoctorListScreen::class)
+    ->name('platform.doctor.management')
     ->breadcrumbs(function (Trail $trail) {
         return $trail
             ->parent('platform.index')
-            ->push('Example screen');
+            ->push(_('Doctor Management'), route('platform.doctor.management'));
     });
 
-Route::screen('example-fields', ExampleFieldsScreen::class)->name('platform.example.fields');
-Route::screen('example-layouts', ExampleLayoutsScreen::class)->name('platform.example.layouts');
-Route::screen('example-charts', ExampleChartsScreen::class)->name('platform.example.charts');
-Route::screen('example-editors', ExampleTextEditorsScreen::class)->name('platform.example.editors');
-Route::screen('example-cards', ExampleCardsScreen::class)->name('platform.example.cards');
-Route::screen('example-advanced', ExampleFieldsAdvancedScreen::class)->name('platform.example.advanced');
+Route::screen('doctor-management/create', DoctorEditScreen::class)
+    ->name('platform.doctor.management.create')
+    ->breadcrumbs(function (Trail $trail) {
+        return $trail
+            ->parent('platform.doctor.management')
+            ->push(__('Create'), route('platform.doctor.management.create'));
+    });
+
+// Platform > System > Users
+Route::screen('doctor-management/{user}/edit', DoctorEditScreen::class)
+    ->name('platform.doctor.management.edit')
+    ->breadcrumbs(function (Trail $trail, $user) {
+        return $trail
+            ->parent('platform.doctor.management')
+            ->push(__('User'), route('platform.doctor.management.edit', $user));
+    });
+
+
+// Route::screen('/idea/edit', IdeaEdit::class)->name('platform.idea.edit');
+// Route::screen('/idea', Idea::class)->name('platform.idea');
 
 //Route::screen('idea', 'Idea::class','platform.screens.idea');

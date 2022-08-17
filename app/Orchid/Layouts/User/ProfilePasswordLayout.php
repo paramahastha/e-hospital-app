@@ -17,7 +17,7 @@ class ProfilePasswordLayout extends Rows
      */
     public function fields(): array
     {
-        return [
+        return [    
             Password::make('old_password')
                 ->placeholder(__('Enter the current password'))
                 ->title(__('Current password'))

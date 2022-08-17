@@ -1,21 +1,18 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Orchid\Screens\DoctorManagement;
 
-namespace App\Orchid\Screens\User;
-
-use App\Orchid\Layouts\User\UserEditLayout;
-use App\Orchid\Layouts\User\UserFiltersLayout;
-use App\Orchid\Layouts\User\UserListLayout;
+use App\Models\User;
+use App\Orchid\Layouts\DoctorManagement\DoctorEditLayout;
+use App\Orchid\Layouts\DoctorManagement\DoctorListLayout;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Orchid\Platform\Models\User;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 
-class UserListScreen extends Screen
+class DoctorListScreen extends Screen
 {
     /**
      * Query data.
@@ -23,13 +20,13 @@ class UserListScreen extends Screen
      * @return array
      */
     public function query(): iterable
-    {        
+    {
         return [
-            'users' => User::with('roles')
-                ->filters()
-                ->filtersApplySelection(UserFiltersLayout::class)
-                ->defaultSort('id', 'desc')
-                ->paginate(),
+            'users' => User::whereHas('roles', function($query) {
+                return $query->where('slug','doctor');
+            })->filters()
+            ->defaultSort('id', 'desc')
+            ->paginate(),
         ];
     }
 
@@ -40,17 +37,17 @@ class UserListScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'User';
+        return 'Doctor Management';
     }
 
-    /**
+        /**
      * Display header description.
      *
      * @return string|null
      */
     public function description(): ?string
     {
-        return 'All registered users';
+        return 'List of data';
     }
 
     /**
@@ -59,7 +56,7 @@ class UserListScreen extends Screen
     public function permission(): ?iterable
     {
         return [
-            'platform.systems.users',
+            'platform.doctor.management',
         ];
     }
 
@@ -73,23 +70,22 @@ class UserListScreen extends Screen
         return [
             Link::make(__('Add'))
                 ->icon('plus')
-                ->route('platform.systems.users.create'),
+                ->route('platform.doctor.management.create'),
         ];
     }
 
     /**
      * Views.
      *
-     * @return string[]|\Orchid\Screen\Layout[]
+     * @return \Orchid\Screen\Layout[]|string[]
      */
     public function layout(): iterable
     {
         return [
-            UserFiltersLayout::class,
-            UserListLayout::class,
-
-            Layout::modal('asyncEditUserModal', UserEditLayout::class)
-                ->async('asyncGetUser'),
+            DoctorListLayout::class,
+            
+            Layout::modal('asyncEditDoctorModal', DoctorEditLayout::class)
+                ->async('asyncGetDoctor'),
         ];
     }
 
@@ -98,7 +94,7 @@ class UserListScreen extends Screen
      *
      * @return array
      */
-    public function asyncGetUser(User $user): iterable
+    public function asyncGetDoctor(User $user): iterable
     {
         return [
             'user' => $user,
@@ -116,7 +112,8 @@ class UserListScreen extends Screen
                 'required',
                 Rule::unique(User::class, 'slug')->ignore($user),
             ],
-        ]);               
+        ]);
+
         $user->fill($request->input('user'))->save();
 
         Toast::info(__('User was saved.'));
@@ -131,4 +128,5 @@ class UserListScreen extends Screen
 
         Toast::info(__('User was removed'));
     }
+    
 }

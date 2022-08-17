@@ -1,12 +1,8 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Orchid\Layouts\DoctorManagement;
 
-namespace App\Orchid\Layouts\User;
-
-// use Orchid\Platform\Models\User;
-
-use Orchid\Platform\Models\User;
+use App\Models\User;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
@@ -16,33 +12,32 @@ use Orchid\Screen\Layouts\Persona;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
-class UserListLayout extends Table
+class DoctorListLayout extends Table
 {
     /**
+     * Data source.
+     *
+     * The name of the key to fetch it from the query.
+     * The results of which will be elements of the table.
+     *
      * @var string
      */
-    public $target = 'users';
+    protected $target = 'users';
 
     /**
+     * Get the table cells to be displayed.
+     *
      * @return TD[]
      */
-    public function columns(): array
+    protected function columns(): iterable
     {
         return [
             TD::make('name', __('Name'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make())
-                ->render(function (User $user) {                    
+                ->render(function (User $user) {
                     return $user->name;
-                }),
-            
-            TD::make('users.roles', __('Role'))
-                ->sort()
-                ->cantHide()
-                ->filter(Input::make())
-                ->render(function (User $user) {                                    
-                    return $user->presenter()->subTitle;                
                 }),
 
             TD::make('email', __('Email'))
@@ -66,9 +61,8 @@ class UserListLayout extends Table
                     return DropDown::make()
                         ->icon('options-vertical')
                         ->list([
-
                             Link::make(__('Edit'))
-                                ->route('platform.systems.users.edit', $user->id)
+                                ->route('platform.doctor.management.edit', $user->id)
                                 ->icon('pencil'),
 
                             Button::make(__('Delete'))
