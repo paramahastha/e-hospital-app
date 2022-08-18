@@ -28,7 +28,7 @@
     php artisan db:seed
     php artisan serve
     ```
-For Web : Go to localhost:8000 | Admin Platform : Go to localhost:8000/admin
+For Web : Go to (localhost:8000) | Admin Platform : Go to (localhost:8000/admin)
 
 ## About Laravel
 
