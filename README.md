@@ -7,6 +7,30 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## How to Setup
+
+- Create Database : e-fatimah-app
+- Clone your project
+- Go to the folder application using cd command on your cmd or terminal
+- Run Composer
+
+    ```sh
+    composer install
+    ```
+- Copy .env.example file to .env on the root folder. You can type copy .env.example .env
+- Open your .env file and change the database name (DB_DATABASE) to whatever you have, username (DB_USERNAME) and password (DB_PASSWORD) field correspond to your configuration.
+- By default, the username is root and you can leave the password field empty. (This is for Xampp)
+- By default, the username is root and password is also root. (This is for Lamp)
+- Run PHP artisan commands
+    ```sh
+    php artisan key:generate
+    php artisan migrate
+    php artisan db:seed
+    php artisan serve
+    ```
+For Web : Go to localhost:8000
+For Admin Platform : Go to localhost:8000/admin
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
