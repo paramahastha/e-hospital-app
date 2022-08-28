@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ConsultRule extends Model
+class ConsultRuleSchedule extends Model
 {
     use HasFactory;
 
@@ -15,18 +15,15 @@ class ConsultRule extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',        
-        'duration',
+        'consult_rule_id',
+        'day',
+        'start_time',
+        'end_time',
         'active'
     ];
 
-    public function user()
+    public function consultRule()
     {
-        return $this->belongsTo(User::class);
-    } 
-
-    public function schedules()
-    {
-        return $this->hasMany(ConsultRuleSchedule::class);
+        return $this->belongsTo(ConsultRule::class);
     } 
 }

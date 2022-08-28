@@ -18,7 +18,7 @@ class UserActivity extends Model
         'user_code',
         'user_role',
         'activity_name',
-        'activity_module'        
+        'activity_module'
     ];
 
     public function user()

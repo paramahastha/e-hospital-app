@@ -7,17 +7,16 @@ use Orchid\Screen\Fields\Cropper;
 use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Radio;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Layouts\Rows;
 
 class DoctorEditLayout extends Rows
 {
     /**
-     * Used to create the title of a group of form elements.
-     *
-     * @var string|null
+     * @var User|null
      */
-    protected $title;
+    private $user;
 
     /**
      * Get the fields elements to be displayed.
@@ -50,16 +49,15 @@ class DoctorEditLayout extends Rows
                 ->type('number')                
                 ->title('Identity Number')
                 ->placeholder(__('Identity Number')),
-
-            Radio::make('user.userInfo.gender')    
-                ->checked()              
-                ->value('Male')      
-                ->placeholder('Male')            
-                ->title('Gender'),   
             
-            Radio::make('user.userInfo.gender')                 
-                ->placeholder('Female')
-                ->value('Female'),      
+            Select::make('user.userInfo.gender')
+                ->required()
+                ->options([
+                    'Male'   => 'Male',
+                    'Female' => 'Female',
+                ])                                
+                ->title('Gender')
+                ->placeholder(__('Select Gender')),
                 
             Input::make('user.userInfo.sip_number')
                 ->required()

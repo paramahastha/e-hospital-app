@@ -77,8 +77,16 @@ class User extends OrchidUserModel
     /**
      * get userInfo associated with the user.
      */
-    public function userActivities()
+    public function activities()
     {
         return $this->hasMany(UserActivities::class);
+    }
+
+    /**
+     * get userInfo associated with the user.
+     */
+    public function consultRule()
+    {
+        return $this->hasOne(ConsultRule::class);
     }
 }

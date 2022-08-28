@@ -214,7 +214,7 @@ class UserEditScreen extends Screen
         ];        
         
         if ($user->userInfo == null) {                            
-            UserInfo::create($userInfoData);    
+            UserInfo::create($userInfoData);        
         } else {                        
             $user->userInfo()->update($userInfoData);
         }

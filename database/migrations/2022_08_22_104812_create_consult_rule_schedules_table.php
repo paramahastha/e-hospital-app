@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateConsultRulesTable extends Migration
+class CreateConsultRuleSchedulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,17 @@ class CreateConsultRulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('consult_rules', function (Blueprint $table) {
+        Schema::create('consult_rule_schedules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')
+            $table->unsignedBigInteger('consult_rule_id');
+            $table->foreign('consult_rule_id')
                 ->references('id')
-                ->on('users')
+                ->on('consult_rules')
                 ->onUpdate('cascade')
-                ->onDelete('cascade');                     
-            $table->integer('duration');
+                ->onDelete('cascade');            
+            $table->text('day');
+            $table->timestamp("start_time");
+            $table->timestamp("end_time");
             $table->integer('active');
             $table->timestamps();
         });
@@ -34,6 +36,6 @@ class CreateConsultRulesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('consult_rules');
+        Schema::dropIfExists('consult_rule_schedules');
     }
 }
