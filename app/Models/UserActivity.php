@@ -15,10 +15,32 @@ class UserActivity extends Model
      * @var array
      */
     protected $fillable = [
+        'user_id',
         'user_code',
         'user_role',
         'activity_name',
         'activity_module'
+    ];
+
+    /**
+     * The attributes for which you can use filters in url.
+     *
+     * @var array
+     */
+    protected $allowedFilters = [
+        'user_code',
+        'user_role',
+        'activity_name',
+        'activity_module'
+    ];
+
+    /**
+     * The attributes for which can use sort in url.
+     *
+     * @var array
+     */
+    protected $allowedSorts = [        
+        'created_at',
     ];
 
     public function user()

@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\User;
 
+use App\Helper\UserActivityHelper;
 use App\Models\User;
+use App\Models\UserActivity;
 use App\Models\UserInfo;
 use App\Orchid\Layouts\User\ProfilePasswordLayout;
 use App\Orchid\Layouts\User\UserProfileEditLayout;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Action;
@@ -131,6 +134,7 @@ class UserProfileScreen extends Screen
             ->fill($request->get('user'))
             ->save();
 
+        UserActivityHelper::record('Update User Profile', UserActivityHelper::$USER_PROFILE);
         Toast::info(__('Profile updated.'));
     }
 

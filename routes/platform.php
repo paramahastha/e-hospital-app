@@ -19,6 +19,7 @@ use App\Orchid\Screens\EmailSenderScreen;
 use App\Orchid\Screens\DoctorManagement\DoctorListScreen;
 use App\Orchid\Screens\DoctorManagement\DoctorEditScreen;
 use App\Orchid\Screens\Idea;
+use App\Orchid\Screens\UserActivity\UserActivityListScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 
@@ -51,6 +52,15 @@ Route::screen('profile', UserProfileScreen::class)
         return $trail
             ->parent('platform.index')
             ->push(__('Profile'), route('platform.profile'));
+    });
+
+// Platform > System > User Activity
+Route::screen('user-activity', UserActivityListScreen::class)
+    ->name('platform.systems.user.activity')
+    ->breadcrumbs(function (Trail $trail) {
+        return $trail
+            ->parent('platform.index')
+            ->push(__('User Activity'), route('platform.systems.user.activity'));
     });
 
 // Platform > System > Users

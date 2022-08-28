@@ -92,11 +92,16 @@ class PlatformProvider extends OrchidServiceProvider
             //         return Dashboard::version();
             //     }, Color::DARK()),
 
+            Menu::make('User Activity')
+                ->icon('monitor')            
+                ->route('platform.systems.user.activity')
+                ->permission('platform.systems.user.activity')
+                ->title(__('User Management')),
+
             Menu::make(__('Users'))
                 ->icon('user')
                 ->route('platform.systems.users')
-                ->permission('platform.systems.users')
-                ->title(__('User Management')),
+                ->permission('platform.systems.users'),                
 
             Menu::make(__('Roles'))
                 ->icon('lock')
@@ -123,10 +128,11 @@ class PlatformProvider extends OrchidServiceProvider
     public function registerPermissions(): array
     {
         return [
-            ItemPermission::group(__('System'))                
-                ->addPermission('platform.main', __('Dashboard'))  
-                ->addPermission('platform.systems.roles', __('Roles'))                
-                ->addPermission('platform.systems.users', __('Users'))                
+            ItemPermission::group(__('System'))
+                ->addPermission('platform.main', __('Dashboard'))
+                ->addPermission('platform.systems.roles', __('Roles'))
+                ->addPermission('platform.systems.users', __('Users'))
+                ->addPermission('platform.systems.user.activity', __('User Activity'))
                 ->addPermission('platform.doctor.management', __('Doctor Management')),
         ];
     }

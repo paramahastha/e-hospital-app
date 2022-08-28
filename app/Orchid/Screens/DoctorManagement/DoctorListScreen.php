@@ -40,7 +40,7 @@ class DoctorListScreen extends Screen
         return 'Doctor Management';
     }
 
-        /**
+    /**
      * Display header description.
      *
      * @return string|null
