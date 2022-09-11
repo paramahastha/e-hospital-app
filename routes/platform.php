@@ -19,6 +19,7 @@ use App\Orchid\Screens\EmailSenderScreen;
 use App\Orchid\Screens\DoctorManagement\DoctorListScreen;
 use App\Orchid\Screens\DoctorManagement\DoctorEditScreen;
 use App\Orchid\Screens\Idea;
+use App\Orchid\Screens\TransactionManagement\TransactionListScreen;
 use App\Orchid\Screens\UserActivity\UserActivityListScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
@@ -141,6 +142,7 @@ Route::screen('roles', RoleListScreen::class)
 //             ->push('Email sender');
 //     });
 
+// Platform > System > Doctor Management
 Route::screen('doctor-management', DoctorListScreen::class)
     ->name('platform.doctor.management')
     ->breadcrumbs(function (Trail $trail) {
@@ -157,13 +159,21 @@ Route::screen('doctor-management/create', DoctorEditScreen::class)
             ->push(__('Create'), route('platform.doctor.management.create'));
     });
 
-// Platform > System > Users
 Route::screen('doctor-management/{user}/edit', DoctorEditScreen::class)
     ->name('platform.doctor.management.edit')
     ->breadcrumbs(function (Trail $trail, $user) {
         return $trail
             ->parent('platform.doctor.management')
             ->push(__('User'), route('platform.doctor.management.edit', $user));
+    });
+
+// Platform > System > Transaction Management
+Route::screen('transaction-management', TransactionListScreen::class)
+    ->name('platform.transaction.management')
+    ->breadcrumbs(function (Trail $trail) {
+        return $trail
+            ->parent('platform.index')
+            ->push(__('Transaction Management'), route('platform.transaction.management'));
     });
 
 

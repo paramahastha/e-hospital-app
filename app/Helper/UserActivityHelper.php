@@ -9,6 +9,12 @@ class UserActivityHelper
 {
     public static $USER_PROFILE = 'user_profile';
 
+    public static $USER_MANAGEMENT = 'user_management';
+
+    public static $ROlE_MANAGEMENT = 'role_management';
+    
+    public static $DOCTOR_MANAGEMENT = 'doctor_management';
+
     public static function record($activityName, $activityModule)
     {    
         $currUser = Auth::user();        

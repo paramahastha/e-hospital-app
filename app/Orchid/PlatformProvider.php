@@ -45,6 +45,11 @@ class PlatformProvider extends OrchidServiceProvider
             //     ->icon('envelope-letter')
             //     ->route('platform.email')
             //     ->title('Tools'),
+
+            Menu::make('Transaction Management')
+                ->icon('money')            
+                ->route('platform.transaction.management')
+                ->permission('platform.transaction.management'),
             
 
             Menu::make('Doctor Management')
@@ -133,7 +138,8 @@ class PlatformProvider extends OrchidServiceProvider
                 ->addPermission('platform.systems.roles', __('Roles'))
                 ->addPermission('platform.systems.users', __('Users'))
                 ->addPermission('platform.systems.user.activity', __('User Activity'))
-                ->addPermission('platform.doctor.management', __('Doctor Management')),
+                ->addPermission('platform.doctor.management', __('Doctor Management'))
+                ->addPermission('platform.transaction.management', __('Transaction Management')),
         ];
     }
 }

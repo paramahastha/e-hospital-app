@@ -6,6 +6,7 @@ use Orchid\Screen\Fields\CheckBox;
 use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Layouts\Rows;
 
 class DoctorConsultRuleEditLayout extends Rows
@@ -38,6 +39,21 @@ class DoctorConsultRuleEditLayout extends Rows
                 ->type('number')                  
                 ->title(__('Duration'))
                 ->placeholder(__('Consultation Duration')), 
+
+            Input::make('user.consultRule.price')
+                ->required()                
+                ->type('number')                  
+                ->title(__('Price'))
+                ->placeholder(__('Consultation Price')), 
+
+            Select::make('user.consultRule.active')
+                ->required()
+                ->options([
+                    1   => 'Available',
+                    0 => 'Not Available',
+                ])                                
+                ->title('Status')
+                ->placeholder(__('Select available status to work')),
         ];        
         
         if (!empty($schedulesData)) {

@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             [
                 'slug' => 'admin',
                 'name' => 'Admin',
-                'permissions' => '{"platform.main": "1", "platform.index": "1", "platform.systems.roles": "1", "platform.systems.users": "1", "platform.doctor.management": "1", "platform.systems.attachment": "1"}',
+                'permissions' => '{"platform.main": "1", "platform.index": "1", "platform.systems.roles": "1", "platform.systems.users": "1", "platform.doctor.management": "1", "platform.systems.attachment": "1", "platform.systems.user.activity": "1", "platform.transaction.management": "1"}',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -70,6 +70,21 @@ class DatabaseSeeder extends Seeder
         DB::table('role_users')->insert([
             'user_id' => '1',
             'role_id' => '1',            
+        ]);  
+
+        DB::table('general_configs')->truncate();
+
+        DB::table('general_configs')->insert([
+            [
+                'config_group' => 'doctor_position',
+                'config_key' => 'umum',
+                'config_value' => 'Dokter Umum',
+            ],
+            [
+                'config_group' => 'doctor_position',
+                'config_key' => 'kandungan',
+                'config_value' => 'Dokter Kandungan',
+            ],
         ]);  
 
         Schema::enableForeignKeyConstraints();

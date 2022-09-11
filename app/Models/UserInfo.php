@@ -24,14 +24,21 @@ class UserInfo extends Model
         'identity_number',
         'sip_number',
         'date_of_birth',
-        'photo_id'
+        'photo_id',
+        'position',
+        'description'
     ];
 
     public static function boot() {
         parent::boot();
         
         self::creating(function($model) {            
-            $model->code = uniqid();
+            if (!empty($model->user->roles)) {
+                $role = $model->user->roles[0];
+                $code = strtoupper(substr($role->slug, 0, 3)) . 
+                    $model->user->id . date("dmy") . rand(0,99);
+                $model->code = $code;               
+            }                        
         });        
     }
 

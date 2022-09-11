@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\User;
 
+use App\Helper\UserActivityHelper;
 use App\Orchid\Layouts\User\UserEditLayout;
 use App\Orchid\Layouts\User\UserFiltersLayout;
 use App\Orchid\Layouts\User\UserListLayout;
@@ -88,8 +89,8 @@ class UserListScreen extends Screen
             UserFiltersLayout::class,
             UserListLayout::class,
 
-            Layout::modal('asyncEditUserModal', UserEditLayout::class)
-                ->async('asyncGetUser'),
+            // Layout::modal('asyncEditUserModal', UserEditLayout::class)
+            //     ->async('asyncGetUser'),
         ];
     }
 
@@ -129,6 +130,7 @@ class UserListScreen extends Screen
     {
         User::findOrFail($request->get('id'))->delete();
 
+        UserActivityHelper::record('Remove User', UserActivityHelper::$USER_MANAGEMENT);
         Toast::info(__('User was removed'));
     }
 }

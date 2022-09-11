@@ -75,7 +75,7 @@ class User extends OrchidUserModel
     }
 
     /**
-     * get userInfo associated with the user.
+     * get activities associated with the user.
      */
     public function activities()
     {
@@ -83,10 +83,27 @@ class User extends OrchidUserModel
     }
 
     /**
-     * get userInfo associated with the user.
+     * get consultRule associated with the user.
      */
     public function consultRule()
     {
-        return $this->hasOne(ConsultRule::class);
+        return $this->hasOne(ConsultRule::class)->with('schedules');
     }
+
+    /**
+     * get transactions associated with the user.
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * get consultations associated with the user.
+     */
+    public function consultations()
+    {
+        return $this->hasMany(Consultation::class, 'consultation_users', 'user_id', 'consultation_id');
+    } 
+    
 }

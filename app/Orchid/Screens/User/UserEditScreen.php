@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\User;
 
+use App\Helper\UserActivityHelper;
 use App\Models\User;
 use App\Models\UserInfo;
 use App\Orchid\Layouts\Role\RolePermissionLayout;
@@ -218,6 +219,9 @@ class UserEditScreen extends Screen
         } else {                        
             $user->userInfo()->update($userInfoData);
         }
+        
+        UserActivityHelper::record($this->user->exists ? 'Edit User' : 'Create User', 
+            UserActivityHelper::$USER_MANAGEMENT);
 
         Toast::info(__('User was saved.'));
 
@@ -235,6 +239,8 @@ class UserEditScreen extends Screen
     public function remove(User $user)
     {
         $user->delete();
+
+        UserActivityHelper::record('Remove User', UserActivityHelper::$USER_MANAGEMENT);
 
         Toast::info(__('User was removed'));
 

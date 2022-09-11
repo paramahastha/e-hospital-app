@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\Role;
 
+use App\Helper\UserActivityHelper;
 use App\Orchid\Layouts\Role\RoleEditLayout;
 use App\Orchid\Layouts\Role\RolePermissionLayout;
 use Illuminate\Http\Request;
@@ -134,6 +135,7 @@ class RoleEditScreen extends Screen
 
         $role->save();
 
+        UserActivityHelper::record('Create or Edit Role', UserActivityHelper::$ROlE_MANAGEMENT);
         Toast::info(__('Role was saved'));
 
         return redirect()->route('platform.systems.roles');
@@ -150,6 +152,7 @@ class RoleEditScreen extends Screen
     {
         $role->delete();
 
+        UserActivityHelper::record('Remove Role', UserActivityHelper::$ROlE_MANAGEMENT);
         Toast::info(__('Role was removed'));
 
         return redirect()->route('platform.systems.roles');

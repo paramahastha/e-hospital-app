@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Layouts\DoctorManagement;
 
+use App\Models\GeneralConfig;
 use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Cropper;
 use Orchid\Screen\Fields\DateTimer;
@@ -25,6 +26,9 @@ class DoctorEditLayout extends Rows
      */
     protected function fields(): iterable
     {
+        $positions = GeneralConfig::where('config_group', 'doctor_position')
+            ->pluck('config_key', 'config_value');
+
         return [
             Cropper::make('user.userInfo.photo')
                 ->title('Photo')                
@@ -37,7 +41,13 @@ class DoctorEditLayout extends Rows
                 ->max(255)
                 ->required()
                 ->title(__('Name'))
-                ->placeholder(__('Name')),            
+                ->placeholder(__('Name')),   
+                
+            Select::make('user.userInfo.position')                            
+                ->required()
+                ->options($positions)
+                ->title('Position')
+                ->placeholder(__('Select Position')), 
 
             DateTimer::make('user.userInfo.date_of_birth')
                 ->required()
@@ -70,6 +80,11 @@ class DoctorEditLayout extends Rows
                 ->required()
                 ->title('Phone number')
                 ->placeholder(__('Phone number')),
+
+            TextArea::make('user.userInfo.description')                        
+                ->rows(5)                
+                ->title(__('Profile Description'))
+                ->placeholder(__('Profile Description')),
 
             TextArea::make('user.userInfo.address')                        
                 ->rows(5)                

@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app['blade.compiler']->directive('money', function ($amount) {            
+            return "<?php echo 'Rp' . number_format($amount, 0); ?>";
+        });
     }
 }

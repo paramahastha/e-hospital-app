@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens\DoctorManagement;
 
+use App\Helper\UserActivityHelper;
 use App\Models\ConsultRule;
 use App\Models\ConsultRuleSchedule;
 use App\Models\User;
@@ -26,6 +27,8 @@ class DoctorEditScreen extends Screen
      */
     public $user;
 
+    
+
     /**
      * Query data.
      *
@@ -33,9 +36,9 @@ class DoctorEditScreen extends Screen
      */
     public function query(User $user): iterable
     {
-        $user->load(['roles']);
-
-        return [
+        $user->load(['roles']);        
+        
+        return [            
             'user'       => $user,
             'permission' => $user->getStatusPermission(),
         ];
@@ -168,7 +171,9 @@ class DoctorEditScreen extends Screen
             'phone_number' => $userInfo['phone_number'],
             'address' => $userInfo['address'],
             'sip_number' => $userInfo['sip_number'],
-            'photo' => $userInfo['photo']
+            'photo' => $userInfo['photo'],
+            'position' => $userInfo['position'],
+            'description' => $userInfo['description'],
         ];                   
         
         if (is_null($user->userInfo)) {
@@ -182,7 +187,8 @@ class DoctorEditScreen extends Screen
         $consultRuleData = [
             'user_id' => $user->id,            
             'duration' => $consultRule['duration'],
-            'active' => 1,
+            'price' => $consultRule['price'],
+            'active' => $consultRule['active'],
         ];
             
         if (is_null($user->consultRule)) {
@@ -228,7 +234,27 @@ class DoctorEditScreen extends Screen
             }
         }
 
+        UserActivityHelper::record('Create or Edit Doctor', UserActivityHelper::$DOCTOR_MANAGEMENT);
         Toast::info(__('Doctor was saved.'));
+
+        return redirect()->route('platform.doctor.management');
+    }
+
+    /**
+     * @param User $user
+     *
+     * @throws \Exception
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     *
+     */
+    public function remove(User $user)
+    {
+        $user->delete();
+
+        UserActivityHelper::record('Remove Doctor', UserActivityHelper::$DOCTOR_MANAGEMENT);
+            
+        Toast::info(__('Doctor was removed'));
 
         return redirect()->route('platform.doctor.management');
     }

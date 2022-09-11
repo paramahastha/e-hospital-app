@@ -152,7 +152,8 @@ class UserProfileScreen extends Screen
         tap($request->user(), function ($user) use ($request) {
             $user->password = Hash::make($request->get('password'));
         })->save();
-
+        
+        UserActivityHelper::record('Change User Password', UserActivityHelper::$USER_PROFILE);
         Toast::info(__('Password changed.'));
     }
 }

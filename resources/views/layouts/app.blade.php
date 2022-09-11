@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'E-Fatimah') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('/js/app.js') }}" defer></script>
@@ -18,13 +18,27 @@
 
     <!-- Styles -->
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+    
+    <script type="text/javascript">
+        $(function() {
+           $('#datetimepicker').datetimepicker({format: 'YYYY-MM-DD'});
+        });
+    </script>
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{ config('app.name', 'E-Fatimah') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -33,11 +47,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto float-end">
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -76,8 +90,8 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
-        </main>
+            @yield('content')            
+        </main>        
     </div>
 </body>
 </html>

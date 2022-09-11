@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $doctorList = User::whereHas('roles', function($query) {
+            return $query
+                ->where('slug','doctor');                
+        })->with('userInfo')->with('consultRule')->get();
+                
+        return view('home', compact('doctorList'));
     }
 }

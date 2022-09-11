@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens\DoctorManagement;
 
+use App\Helper\UserActivityHelper;
 use App\Models\User;
 use App\Orchid\Layouts\DoctorManagement\DoctorEditLayout;
 use App\Orchid\Layouts\DoctorManagement\DoctorListLayout;
@@ -9,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
-use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 
 class DoctorListScreen extends Screen
@@ -47,7 +47,7 @@ class DoctorListScreen extends Screen
      */
     public function description(): ?string
     {
-        return 'List of data';
+        return 'List of doctor data';
     }
 
     /**
@@ -84,8 +84,8 @@ class DoctorListScreen extends Screen
         return [
             DoctorListLayout::class,
             
-            Layout::modal('asyncEditDoctorModal', DoctorEditLayout::class)
-                ->async('asyncGetDoctor'),
+            // Layout::modal('asyncEditDoctorModal', DoctorEditLayout::class)
+            //     ->async('asyncGetDoctor'),
         ];
     }
 
@@ -116,7 +116,7 @@ class DoctorListScreen extends Screen
 
         $user->fill($request->input('user'))->save();
 
-        Toast::info(__('User was saved.'));
+        Toast::info(__('Doctor was saved.'));
     }
 
     /**
@@ -125,8 +125,8 @@ class DoctorListScreen extends Screen
     public function remove(Request $request): void
     {
         User::findOrFail($request->get('id'))->delete();
-
-        Toast::info(__('User was removed'));
+        UserActivityHelper::record('Remove Doctor', UserActivityHelper::$DOCTOR_MANAGEMENT);
+        Toast::info(__('Doctor was removed'));
     }
     
 }
