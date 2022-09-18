@@ -16,17 +16,24 @@ class Transaction extends Model
      */
     protected $fillable = [
         'user_id',
+        'consultation_id',
         'code',
         'description',
         'prescription',
         'proof_of_payment',
         'payment_status',
         'payment_reject_reason',
+        'total_price',
         'status'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function consultation()
+    {
+        return $this->belongsTo(Consultation::class)->with('consultUsers');
     }
 }

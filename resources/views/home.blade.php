@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">{{ __("Cari Jadwal Dokter") }}</div>
+                <div class="card-header">{{ __("Search doctor's schedule") }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -16,15 +16,12 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>             
-                                <th>Kode</th>                   
-                                <th>Nama</th>                                
-                                <th>Posisi</th>                                
-                                <th>Durasi</th>
-                                <th>Harga</th>                                
-                                <th colspan="2"></th>
-                                {{-- <th>Published At</th>
-                                <th>Created at</th>
-                                <th colspan="2">Action</th> --}}
+                                <th>Code</th>                   
+                                <th>Name</th>                                
+                                <th>Position</th>                                
+                                <th>Duration</th>
+                                <th>Consultation Fee</th>                                
+                                <th colspan="2"></th>                                
                             </tr>
                         </thead>
                         <tbody>
@@ -34,17 +31,9 @@
                                 <td>{{ $doctor->name }}</td>       
                                 <td>{{ $doctor->userInfo->position }}</td>                                
                                 <td>{{ $doctor->consultRule->duration }} Minutes</td>
-                                <td>@money($doctor->consultRule->price)</td>
-                                {{-- @foreach ($doctor->consultRule->schedules as $schedule)
-                                    <td>{{$schedule->day}} : {{$schedule->active ? "Available" : "Unavailable"}}</td>
-                                @endforeach --}}
-
-                                {{-- <td>{{ date('Y-m-d', strtotime($post->published_at)) }}</td>
-                                <td>{{ date('Y-m-d', strtotime($post->created_at)) }}</td>
-                                <td>
-                                --}}
+                                <td>@money($doctor->consultRule->price)</td>                            
                                 <td >
-                                    <a href="/doctor/{{$doctor->id}}/detail" class="btn btn-primary">Buat Janji</a>
+                                    <a href="/doctor/detail/{{$doctor->id}}" class="btn btn-primary">Make Appointment</a>
                                 </td> 
                             </tr>
                             @endforeach

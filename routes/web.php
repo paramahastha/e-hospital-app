@@ -14,16 +14,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/home');
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/doctor/{user}/detail', [App\Http\Controllers\DoctorController::class, 'detail']);
+Route::get('/doctor/detail/{user}', [App\Http\Controllers\DoctorController::class, 'detail']);
 
-Route::post('/consult/{user}/data-form', [App\Http\Controllers\ConsultController::class, 'create'])->name('consult.create');
+Route::post('/consult/detail/{user}/data-form', [App\Http\Controllers\ConsultController::class, 'create'])->name('consult.create');
+Route::post('/consult/{user}/complete/{consult}', [App\Http\Controllers\ConsultController::class, 'complete'])->name('consult.complete');
+
+Route::get('/transaction-history', [App\Http\Controllers\TransactionController::class, 'index'])->name('transaction.history');
+Route::get('/transaction-history/detail/{transaction}', [App\Http\Controllers\TransactionController::class, 'detail'])->name('transaction.history.detail');
 
 Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index']);
 Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages']);
