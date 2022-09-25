@@ -19,6 +19,7 @@ use App\Orchid\Screens\EmailSenderScreen;
 use App\Orchid\Screens\DoctorManagement\DoctorListScreen;
 use App\Orchid\Screens\DoctorManagement\DoctorEditScreen;
 use App\Orchid\Screens\Idea;
+use App\Orchid\Screens\TransactionManagement\TransactionEditScreen;
 use App\Orchid\Screens\TransactionManagement\TransactionListScreen;
 use App\Orchid\Screens\UserActivity\UserActivityListScreen;
 use Illuminate\Support\Facades\Route;
@@ -175,6 +176,14 @@ Route::screen('transaction-management', TransactionListScreen::class)
             ->parent('platform.index')
             ->push(__('Transaction Management'), route('platform.transaction.management'));
     });
+
+Route::screen('transaction-management/{transaction}/edit', TransactionEditScreen::class)
+->name('platform.transaction.management.edit')
+->breadcrumbs(function (Trail $trail, $user) {
+    return $trail
+        ->parent('platform.transaction.management')
+        ->push(__('Transaction Management'), route('platform.transaction.management.edit', $user));
+});
 
 
 // Route::screen('/idea/edit', IdeaEdit::class)->name('platform.idea.edit');

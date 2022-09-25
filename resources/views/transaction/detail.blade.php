@@ -45,14 +45,26 @@
                                                 <p>Code : {{$doctor->userInfo->code}}</p>
                                                 <p>Name : {{$doctor->name}}</p></div>    
                                             <div class="col-md-6">
-                                                <p>Position : {{$doctor->userInfo->position}}</p>                                                     
-                                                <a href="" class="btn btn-primary 
+                                                <p>Position : {{$doctor->userInfo->position}}</p>                                                
+                                            </div>    
+                                        </div>       
+                                        <div class="row mt-3">
+                                            <div class="col-md-6">
+                                                <a href="{{ route('consult.detail.chat', ['consult' => $consult->id]) }}" class="btn btn-primary 
                                                     {{(strtotime(date("Y-m-d H:i:s")) > strtotime($consult->session_start)
-                                                    && strtotime(date("Y-m-d H:i:s")) < strtotime($consult->session_end)) && $transaction->payment_status == 'approve' ? '' : 'disabled'}}" >
+                                                    && strtotime(date("Y-m-d H:i:s")) < strtotime($consult->session_end)) && $transaction->payment_status == 'approve' 
+                                                    && $transaction->status == 'consult_process' ? '' : 'disabled'}}" >
                                                     Consultation
                                                 </a>
                                             </div>    
-                                        </div>                                                                                
+                                            <div class="col-md-6">
+                                                @if($transaction->payment_status == 'approve' && $transaction->status == 'done')
+                                                    <a href="" class="btn btn-primary float-end" >
+                                                        E-Recipe
+                                                    </a>
+                                                @endif
+                                            </div>    
+                                        </div>                                                                         
                                     </div>
                                 </div>
                             </div>
@@ -88,10 +100,34 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-
+                                        Payment
                                     </div>
                                     <div class="card-body">
-                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p>Status : {{$transaction->payment_status}}</p>                                                
+                                            </div>
+                                            <div class="col-md-6">                                                
+                                                @if($transaction->payment_status != 'approve')         
+                                                    <p>Please upload your proof of payment.</p>
+                                                    <a href="" class="btn btn-secondary 
+                                                    {{$transaction->status == 'payment_process' ||
+                                                    $transaction->consultation->status == 'confirm' &&
+                                                    ($transaction->payment_status == 'init' ||
+                                                    $transaction->payment_status == 'reject') ? '' : 'disabled'}}">
+                                                        Upload
+                                                    </a>
+                                                @else
+                                                    <p>Your proof of payment has been uploaded.</p>
+                                                    <a href="" class="btn btn-primary">
+                                                        Proof of Payment
+                                                    </a>
+                                                @endif                                                
+                                                @if($transaction->payment_status == 'reject')         
+                                                    <p class="mt-4">Reject Reason : {{$transaction->payment_reject_reason}}</p>                                                    
+                                                @endif
+                                            </div>
+                                        </div>                                        
                                     </div>
                                 </div>
                             </div>

@@ -15,6 +15,8 @@ class UserActivityHelper
     
     public static $DOCTOR_MANAGEMENT = 'doctor_management';
 
+    public static $TRANSACTION_MANAGEMENT = 'transaction_management';
+
     public static function record($activityName, $activityModule)
     {    
         $currUser = Auth::user();        

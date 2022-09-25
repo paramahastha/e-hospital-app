@@ -20,7 +20,8 @@
                                 <th>No</th>             
                                 <th>Code</th>
                                 <th>Description</th>                                                                                                                   
-                                <th>Payment Status</th>                                
+                                <th>Payment Status</th>
+                                <th>Consult Status</th>                                
                                 <th>Status</th>      
                                 <th>Total Price</th>    
                                 <th>Date</th>                                                      
@@ -34,6 +35,7 @@
                                 <td>{{ $transaction->code }}</td>         
                                 <td>{{ $transaction->description }}</td>                                                                
                                 <td>{{ $transaction->payment_status }}</td>
+                                <td>{{ $transaction->consultation->status }}</td>   
                                 <td>{{ $transaction->status }}</td>
                                 <td>@money($transaction->total_price)</td>
                                 <td>{{ $transaction->created_at->format("d-m-Y  H:i A") }}</td>

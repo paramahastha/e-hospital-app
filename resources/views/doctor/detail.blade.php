@@ -20,6 +20,16 @@
                      </div>                        
                 </div>
                 <div class="card-body">
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <p><strong>Opps Something went wrong</strong></p>
+                            <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
@@ -67,7 +77,8 @@
                                             </span>
                                         </div>                                    
                                         <br>
-                                        @foreach($user->consultRule->schedules as $schedule)                                                
+                                        @foreach($user->consultRule->schedules as $schedule)      
+                                            @if ($schedule->active == '1')
                                             <div class="card">
                                                 <div class="card-header">
                                                     {{ucwords($schedule->day)}}
@@ -76,8 +87,9 @@
                                                     {{date('H:i',strtotime($schedule->start_time))}} - 
                                                     {{date('H:i',strtotime($schedule->end_time))}}                                                                
                                                 </div>
-                                            </div>        
-                                            <br>                                       
+                                            </div>      
+                                            <br>  
+                                            @endif                                     
                                         @endforeach                                                                                           
                                     </div>
                                     <br>                                      

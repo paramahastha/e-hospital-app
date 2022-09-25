@@ -105,5 +105,10 @@ class User extends OrchidUserModel
     {
         return $this->hasMany(Consultation::class, 'consultation_users', 'user_id', 'consultation_id');
     } 
-    
+
+    //Add the below function
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }

@@ -8,15 +8,33 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
+use App\Events\MessageSent;
 
 class ConsultController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function create(User $user, Request $request)
     {            
         $request->validate([
             'consultDate' => 'required',
         ]);
+
+        $consultSession = $user->consultRule->schedules
+        ->where('day', strtolower(date('l', strtotime($request->get('consultDate')))))
+        ->where('active', '1')->first();
+        
+        if (is_null($consultSession)) {            
+            throw ValidationException::withMessages(['consultDate' => 
+            'consultation date must be on schedule']);
+        }
         
         $currUser = Auth::user();
         
@@ -114,6 +132,7 @@ class ConsultController extends Controller
             $userInfo->identity_number = $request->get('identity_number');
             $userInfo->phone_number = $request->get('phone_number');
             $userInfo->address = $request->get('address');
+            $userInfo->save();
 
             return view('consult.complete', compact('user', 'currUser'));
         }
@@ -127,5 +146,33 @@ class ConsultController extends Controller
         $userInfo->save();
 
         return view('consult.complete', compact('user', 'currUser'));
+    }
+
+    public function consultChat(Consultation $consult, Request $request) {        
+        return view('consult.chat', compact('consult'));
+    }
+
+    public function fetchMessages()
+    {         
+        return Message::with('user', 'consultation')->get();
+    }
+
+    public function sendMessage(Request $request)
+    {         
+        $consult = Consultation::with('consultUsers')->find($request->consult["id"]);
+
+        if (is_null($consult)) {
+            return ['status' => 'Message Failed!'];
+        }
+        
+        $user = Auth::user();
+        $message = $user->messages()->create([
+            'consultation_id' => $request->consult["id"],
+            'message' => $request->input('message')
+        ]);
+
+        broadcast(new MessageSent($user, $message))->toOthers();
+        
+        return ['status' => 'Message Sent!'];
     }
 }

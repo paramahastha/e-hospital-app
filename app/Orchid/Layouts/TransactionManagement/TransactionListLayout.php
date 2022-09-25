@@ -44,7 +44,7 @@ class TransactionListLayout extends Table
                 ->cantHide()
                 ->filter(Input::make())
                 ->render(function (Transaction $transaction) {
-                    return $transaction->code;
+                    return $transaction->description;
                 }),
 
             TD::make('payment_status', __('Payment Status'))
@@ -52,7 +52,7 @@ class TransactionListLayout extends Table
                 ->cantHide()
                 ->filter(Input::make())
                 ->render(function (Transaction $transaction) {
-                    return $transaction->code;
+                    return $transaction->payment_status;
                 }),
 
             TD::make('status', __('Status'))
@@ -60,8 +60,24 @@ class TransactionListLayout extends Table
                 ->cantHide()
                 ->filter(Input::make())
                 ->render(function (Transaction $transaction) {
-                    return $transaction->code;
-                }),           
+                    return $transaction->status;
+                }),     
+                
+            TD::make('total_price', __('Total Price'))
+                ->sort()
+                ->cantHide()
+                ->filter(Input::make())
+                ->render(function (Transaction $transaction) {
+                    return $transaction->total_price;
+                }),
+                
+            TD::make('created_at', __('Date'))
+                ->sort()
+                ->cantHide()
+                ->filter(Input::make())
+                ->render(function (Transaction $transaction) {
+                    return $transaction->created_at;
+                }),
 
             TD::make(__('Actions'))
                 ->align(TD::ALIGN_CENTER)

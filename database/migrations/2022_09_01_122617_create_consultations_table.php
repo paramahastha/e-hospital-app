@@ -18,7 +18,7 @@ class CreateConsultationsTable extends Migration
             $table->string('name')->nullable();
             $table->timestamp('session_start');
             $table->timestamp('session_end');
-            $table->enum('status', ['init','ongoing','done']);
+            $table->enum('status', ['init','confirm','ongoing','done']);
             $table->timestamps();
         });
     }

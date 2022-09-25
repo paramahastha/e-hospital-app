@@ -5268,7 +5268,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   //Takes the "user" props from <chat-form> … :user="{{ Auth::user() }}"></chat-form> in the parent chat.blade.php.
-  props: ["user"],
+  props: ["user", "consult"],
   data: function data() {
     return {
       newMessage: ""
@@ -5279,6 +5279,7 @@ __webpack_require__.r(__webpack_exports__);
       //Emit a "messagesent" event including the user who sent the message along with the message content
       this.$emit("messagesent", {
         user: this.user,
+        consult: this.consult,
         //newMessage is bound to the earlier "btn-input" input field
         message: this.newMessage
       }); //Clear the input
@@ -5302,7 +5303,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ["messages"]
+  props: ["messages", "consult"]
 });
 
 /***/ }),
@@ -5416,7 +5417,7 @@ var render = function render() {
       staticClass: "clearfix"
     }, [_c("div", {
       staticClass: "header"
-    }, [_c("strong", [_vm._v("\n          " + _vm._s(message.user.name) + "\n        ")])]), _vm._v(" "), _c("p", [_vm._v("\n        " + _vm._s(message.message) + "\n      ")])])]);
+    }, [_c("strong", [_vm._v("\n          " + _vm._s(message.user.name) + "\n        ")])]), _vm._v(" "), _c("p", [_vm._v("\n        " + _vm._s(message.message) + "          \n      ")])])]);
   }), 0);
 };
 
@@ -5514,7 +5515,8 @@ var app = new Vue({
     window.Echo["private"]('chat').listen('MessageSent', function (e) {
       _this.messages.push({
         message: e.message.message,
-        user: e.user
+        user: e.user,
+        consult: e.consult
       });
     });
   },
@@ -5522,9 +5524,10 @@ var app = new Vue({
     fetchMessages: function fetchMessages() {
       var _this2 = this;
 
-      //GET request to the messages route in our Laravel server to fetch all the messages
-      axios.get('/messages').then(function (response) {
-        //Save the response in the messages array to display on the chat view
+      console.log('log', this); //GET request to the messages route in our Laravel server to fetch all the messages
+
+      axios.post('/consult/messages/list').then(function (response) {
+        //Save the response in the messages array to display on the chat view                
         _this2.messages = response.data;
       });
     },
@@ -5533,7 +5536,7 @@ var app = new Vue({
       //Pushes it to the messages array
       this.messages.push(message); //POST request to the messages route with the message data in order for our Laravel server to broadcast it.
 
-      axios.post('/messages', message).then(function (response) {
+      axios.post('/consult/messages/send', message).then(function (response) {
         console.log(response.data);
       });
     }

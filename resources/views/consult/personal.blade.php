@@ -50,7 +50,7 @@
                                                 <label>Date of Birth <strong style="color:red;">*</strong></label>
                                                 <div class='input-group date' id='datetimepicker'>
                                                    <input type='text' name='dob' 
-                                                      value={{!is_null($currUser->userInfo) ? $currUser->userInfo->date_of_birth : ''}} 
+                                                      value="{{!is_null($currUser->userInfo) ? $currUser->userInfo->date_of_birth : ''}}"
                                                       class="form-control" required placeholder="Pilih Tanggal"/>
                                                    <span class="input-group-addon">
                                                       <span class="glyphicon glyphicon-calendar"></span>

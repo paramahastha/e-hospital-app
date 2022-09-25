@@ -8,7 +8,7 @@
           </strong>
         </div>
         <p>
-          {{ message.message }}
+          {{ message.message }}          
         </p>
       </div>
     </li>
@@ -16,6 +16,6 @@
 </template>
 <script>
 export default {
-  props: ["messages"],
+  props: ["messages", "consult"],
 };
 </script>

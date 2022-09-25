@@ -23,7 +23,7 @@ class DoctorConsultRuleEditLayout extends Rows
      */
     protected function fields(): iterable
     {
-        $this->user = $this->query->get('user');        
+        $this->user = $this->query->get('user');
 
         $schedulesData = null;
         if (!is_null($this->user) && !is_null($this->user->consultRule)

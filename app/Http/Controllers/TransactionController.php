@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Show the user transaction.
      *
@@ -16,7 +20,10 @@ class TransactionController extends Controller
     public function index()
     {
         $currUser = Auth::user();
-        $transactionList = Transaction::with('consultation')->where('user_id', $currUser->id)->get();        
+        $transactionList = Transaction::with('consultation')
+            ->where('user_id', $currUser->id)->whereHas('user', function($query) {
+                $query->whereHas('userInfo');
+            })->get();
                 
         return view('transaction.index', compact('transactionList'));
     }

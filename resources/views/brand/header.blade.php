@@ -11,6 +11,6 @@
     &nbsp;&nbsp;
     <span class="m-l d-none d-sm-block">
          E - Fatimah         
-        {{-- <medium class="v-top opacity">platform</medium> --}}
+        <medium class="v-top opacity">platform</medium>
     </span>
 </p>
