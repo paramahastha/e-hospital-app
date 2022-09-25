@@ -148,13 +148,13 @@ class ConsultController extends Controller
         return view('consult.complete', compact('user', 'currUser'));
     }
 
-    public function consultChat(Consultation $consult, Request $request) {        
+    public function consultChat(Consultation $consult, Request $request) {       
         return view('consult.chat', compact('consult'));
     }
 
-    public function fetchMessages()
+    public function fetchMessages(Consultation $consult)
     {         
-        return Message::with('user', 'consultation')->get();
+        return Message::with('user', 'consultation')->where('consultation_id', $consult->id )->get();
     }
 
     public function sendMessage(Request $request)

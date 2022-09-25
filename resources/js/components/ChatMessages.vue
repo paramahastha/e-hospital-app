@@ -16,6 +16,34 @@
 </template>
 <script>
 export default {
-  props: ["messages", "consult"],
+  props: ["consult", "messages"],
+
+  data() {
+    return {
+ 
+    }    
+  },
+  //Upon initialisation, run fetchMessages(). 
+  created() {
+      this.fetchMessages();
+
+      window.Echo.private('chat').listen('MessageSent', (e) => {            
+          this.$emit('addmessage', {
+              message: e.message.message,
+              user: e.user,
+              consult: e.consult
+          });
+      });
+  },
+  methods: {
+      fetchMessages() {            
+          //GET request to the messages route in our Laravel server to fetch all the messages
+          axios.get('/consult/messages/list/' + this.consult.id).then(response => {
+              //Save the response in the messages array to display on the chat view                
+              this.$emit('fetchmessage', response.data);
+          });
+      },
+     
+  }
 };
 </script>

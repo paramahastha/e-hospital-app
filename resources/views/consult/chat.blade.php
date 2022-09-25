@@ -13,10 +13,10 @@
              </div>                        
         </div>
         <div class="card-body">
-            <chat-messages :messages="messages" :consult="{{ $consult }}"></chat-messages>
+            <chat-messages v-on:fetchmessage="fetchmessage"  :messages="messages" :consult="{{ $consult }}"></chat-messages>
         </div>
         <div class="card-footer">
-            <chat-form v-on:messagesent="addMessage" :user="{{ Auth::user() }}" :consult="{{ $consult }}"></chat-form>
+            <chat-form v-on:addmessage="addmessage" :messages="messages" :user="{{ Auth::user() }}" :consult="{{ $consult }}"></chat-form>
         </div>
     </div>
 </div>

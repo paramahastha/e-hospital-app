@@ -31,7 +31,7 @@ Route::get('/transaction-history/detail/{transaction}', [App\Http\Controllers\Tr
 
 Route::get('/consult/detail/chat/{consult}', [App\Http\Controllers\ConsultController::class, 'consultChat'])->name('consult.detail.chat');
 // Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index']);
-Route::post('/consult/messages/list', [App\Http\Controllers\ConsultController::class, 'fetchMessages']);
+Route::get('/consult/messages/list/{consult}', [App\Http\Controllers\ConsultController::class, 'fetchMessages']);
 Route::post('/consult/messages/send', [App\Http\Controllers\ConsultController::class, 'sendMessage']);
 
 // Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages']);

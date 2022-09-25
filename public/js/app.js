@@ -5268,23 +5268,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   //Takes the "user" props from <chat-form> … :user="{{ Auth::user() }}"></chat-form> in the parent chat.blade.php.
-  props: ["user", "consult"],
+  props: ["user", "consult", "messages"],
   data: function data() {
     return {
       newMessage: ""
     };
   },
   methods: {
-    sendMessage: function sendMessage() {
-      //Emit a "messagesent" event including the user who sent the message along with the message content
-      this.$emit("messagesent", {
+    // sendMessage() {            
+    //   //Emit a "messagesent" event including the user who sent the message along with the message content
+    //   this.$emit("messagesent", {
+    //     user: this.user,
+    //     consult: this.consult,
+    //   //newMessage is bound to the earlier "btn-input" input field
+    //     message: this.newMessage,
+    //   });
+    //   //Clear the input
+    //   this.newMessage = "";
+    // },
+    //Receives the message that was emitted from the ChatForm Vue component
+    addMessage: function addMessage() {
+      //Pushes it to the messages array
+      var message = {
         user: this.user,
         consult: this.consult,
         //newMessage is bound to the earlier "btn-input" input field
         message: this.newMessage
-      }); //Clear the input
+      };
+      this.$emit("addmessage", message);
+      this.newMessage = ""; //POST request to the messages route with the message data in order for our Laravel server to broadcast it.
 
-      this.newMessage = "";
+      axios.post('/consult/messages/send', message).then(function (response) {
+        console.log(response.data);
+      });
     }
   }
 });
@@ -5303,7 +5319,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ["messages", "consult"]
+  props: ["consult", "messages"],
+  data: function data() {
+    return {};
+  },
+  //Upon initialisation, run fetchMessages(). 
+  created: function created() {
+    var _this = this;
+
+    this.fetchMessages();
+    window.Echo["private"]('chat').listen('MessageSent', function (e) {
+      _this.$emit('addmessage', {
+        message: e.message.message,
+        user: e.user,
+        consult: e.consult
+      });
+    });
+  },
+  methods: {
+    fetchMessages: function fetchMessages() {
+      var _this2 = this;
+
+      //GET request to the messages route in our Laravel server to fetch all the messages
+      axios.get('/consult/messages/list/' + this.consult.id).then(function (response) {
+        //Save the response in the messages array to display on the chat view                
+        _this2.$emit('fetchmessage', response.data);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -5365,7 +5408,7 @@ var render = function render() {
     on: {
       keyup: function keyup($event) {
         if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
-        return _vm.sendMessage.apply(null, arguments);
+        return _vm.addMessage.apply(null, arguments);
       },
       input: function input($event) {
         if ($event.target.composing) return;
@@ -5380,7 +5423,7 @@ var render = function render() {
       id: "btn-chat"
     },
     on: {
-      click: _vm.sendMessage
+      click: _vm.addMessage
     }
   }, [_vm._v("\n      Send\n    ")])])]);
 };
@@ -5504,41 +5547,17 @@ Vue.component('chat-form', (__webpack_require__(/*! ./components/ChatForm.vue */
 
 var app = new Vue({
   el: '#app',
-  data: {
-    messages: []
-  },
-  //Upon initialisation, run fetchMessages(). 
-  created: function created() {
-    var _this = this;
-
-    this.fetchMessages();
-    window.Echo["private"]('chat').listen('MessageSent', function (e) {
-      _this.messages.push({
-        message: e.message.message,
-        user: e.user,
-        consult: e.consult
-      });
-    });
+  data: function data() {
+    return {
+      messages: []
+    };
   },
   methods: {
-    fetchMessages: function fetchMessages() {
-      var _this2 = this;
-
-      console.log('log', this); //GET request to the messages route in our Laravel server to fetch all the messages
-
-      axios.post('/consult/messages/list').then(function (response) {
-        //Save the response in the messages array to display on the chat view                
-        _this2.messages = response.data;
-      });
+    addmessage: function addmessage(message) {
+      this.messages.push(message);
     },
-    //Receives the message that was emitted from the ChatForm Vue component
-    addMessage: function addMessage(message) {
-      //Pushes it to the messages array
-      this.messages.push(message); //POST request to the messages route with the message data in order for our Laravel server to broadcast it.
-
-      axios.post('/consult/messages/send', message).then(function (response) {
-        console.log(response.data);
-      });
+    fetchmessage: function fetchmessage(messages) {
+      this.messages = messages;
     }
   }
 });
