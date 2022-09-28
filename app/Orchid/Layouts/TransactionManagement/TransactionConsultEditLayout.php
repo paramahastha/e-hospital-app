@@ -42,12 +42,14 @@ class TransactionConsultEditLayout extends Rows
 
             DateTimer::make('consultation.session_start')
                 ->title('Session Start')
+                ->disabled($consultation->status != 'init')
                 ->value(date('H:i', strtotime($consultation->session_start)))
                 ->noCalendar()                                                      
                 ->format('Y-m-d H:i:S'),
                             
             DateTimer::make('consultation.session_end')
                 ->title('Session End')
+                ->disabled($consultation->status != 'init')
                 ->value(date('H:i', strtotime($consultation->session_start)))
                 ->noCalendar()                                                      
                 ->format('Y-m-d H:i:S'),            

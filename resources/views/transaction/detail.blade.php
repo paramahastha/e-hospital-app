@@ -107,25 +107,37 @@
                                             <div class="col-md-6">
                                                 <p>Status : {{$transaction->payment_status}}</p>                                                
                                             </div>
-                                            <div class="col-md-6">                                                
-                                                @if($transaction->payment_status != 'approve')         
-                                                    <p>Please upload your proof of payment.</p>
-                                                    <a href="" class="btn btn-secondary 
-                                                    {{$transaction->status == 'payment_process' ||
-                                                    $transaction->consultation->status == 'confirm' &&
-                                                    ($transaction->payment_status == 'init' ||
-                                                    $transaction->payment_status == 'reject') ? '' : 'disabled'}}">
-                                                        Upload
-                                                    </a>
-                                                @else
-                                                    <p>Your proof of payment has been uploaded.</p>
-                                                    <a href="" class="btn btn-primary">
-                                                        Proof of Payment
-                                                    </a>
-                                                @endif                                                
-                                                @if($transaction->payment_status == 'reject')         
-                                                    <p class="mt-4">Reject Reason : {{$transaction->payment_reject_reason}}</p>                                                    
-                                                @endif
+                                            <div class="col-md-6">     
+                                                
+                                                    @if($transaction->payment_status != 'approve')    
+                                                        <form action="{{route('transaction.history.detail.upload.payment', 
+                                                            ['transaction' => $transaction->id])}}" 
+                                                            method="post" enctype="multipart/form-data">
+                                                            @csrf     
+                                                            <p>Please upload your proof of payment.</p>
+                                                            <input type="file" name="proof_of_payment"
+                                                            {{$transaction->status == 'payment_process' ||
+                                                            $transaction->consultation->status == 'confirm' &&
+                                                            ($transaction->payment_status == 'init' ||
+                                                            $transaction->payment_status == 'reject') ? '' : 'disabled'}}>
+                                                            <button type="submit" name="submit" class="btn btn-primary mt-4">
+                                                                Upload Files
+                                                            </button>
+                                                        </form>
+                                                    @else
+                                                        <p>Your proof of payment has been uploaded.</p>
+                                                        <form action="{{route('transaction.history.detail.download.payment', 
+                                                            ['transaction' => $transaction->id])}}" 
+                                                            method="post" enctype="multipart/form-data">
+                                                            @csrf  
+                                                            <button type="submit" name="submit" class="btn btn-primary">
+                                                                Proof of Payment
+                                                            </button>                                                           
+                                                        </form>
+                                                    @endif                                                
+                                                    @if($transaction->payment_status == 'reject')         
+                                                        <p class="mt-4">Reject Reason : {{$transaction->payment_reject_reason}}</p>                                                    
+                                                    @endif                                                                                                
                                             </div>
                                         </div>                                        
                                     </div>

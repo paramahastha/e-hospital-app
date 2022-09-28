@@ -28,11 +28,14 @@ Route::post('/consult/{user}/complete/{consult}', [App\Http\Controllers\ConsultC
 
 Route::get('/transaction-history', [App\Http\Controllers\TransactionController::class, 'index'])->name('transaction.history');
 Route::get('/transaction-history/detail/{transaction}', [App\Http\Controllers\TransactionController::class, 'detail'])->name('transaction.history.detail');
+Route::post('/transaction-history/detail/{transaction}/upload-payment', [App\Http\Controllers\TransactionController::class, 'uploadPayment'])->name('transaction.history.detail.upload.payment');
+Route::post('/transaction-history/detail/{transaction}/download-payment', [App\Http\Controllers\TransactionController::class, 'downloadPayment'])->name('transaction.history.detail.download.payment');
 
 Route::get('/consult/detail/chat/{consult}', [App\Http\Controllers\ConsultController::class, 'consultChat'])->name('consult.detail.chat');
 // Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index']);
-Route::get('/consult/messages/list/{consult}', [App\Http\Controllers\ConsultController::class, 'fetchMessages']);
+Route::post('/consult/messages/list', [App\Http\Controllers\ConsultController::class, 'fetchMessages']);
 Route::post('/consult/messages/send', [App\Http\Controllers\ConsultController::class, 'sendMessage']);
+
 
 // Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages']);
 // Route::post('/messages', [App\Http\Controllers\ChatsController::class, 'sendMessage']);

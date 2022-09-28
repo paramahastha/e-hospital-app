@@ -5275,24 +5275,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    // sendMessage() {            
-    //   //Emit a "messagesent" event including the user who sent the message along with the message content
-    //   this.$emit("messagesent", {
-    //     user: this.user,
-    //     consult: this.consult,
-    //   //newMessage is bound to the earlier "btn-input" input field
-    //     message: this.newMessage,
-    //   });
-    //   //Clear the input
-    //   this.newMessage = "";
-    // },
-    //Receives the message that was emitted from the ChatForm Vue component
     addMessage: function addMessage() {
       //Pushes it to the messages array
       var message = {
         user: this.user,
         consult: this.consult,
-        //newMessage is bound to the earlier "btn-input" input field
         message: this.newMessage
       };
       this.$emit("addmessage", message);
@@ -5341,7 +5328,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       //GET request to the messages route in our Laravel server to fetch all the messages
-      axios.get('/consult/messages/list/' + this.consult.id).then(function (response) {
+      axios.post('/consult/messages/list', {
+        id: this.consult.id
+      }).then(function (response) {
         //Save the response in the messages array to display on the chat view                
         _this2.$emit('fetchmessage', response.data);
       });
