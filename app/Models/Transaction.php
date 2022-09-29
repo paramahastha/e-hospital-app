@@ -34,6 +34,6 @@ class Transaction extends Model
 
     public function consultation()
     {
-        return $this->belongsTo(Consultation::class)->with('consultUsers');
+        return $this->hasOne(Consultation::class, 'id', 'consultation_id')->with('consultUsers');
     }
 }

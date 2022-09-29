@@ -62,7 +62,7 @@ class DoctorEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make(__('Remove'))
+            Button::make(__('Remove'))                
                 ->icon('trash')
                 ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
                 ->method('remove')

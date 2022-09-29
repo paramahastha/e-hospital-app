@@ -20,11 +20,10 @@
         </div>
     </div>
     <script>
-        CountDownTimer('{{$consult->session_start}}', 'countdown');
-        function CountDownTimer(dt, id)
+        CountDownTimer('{{$consult->session_start}}', 'countdown', '{{$transaction->id}}');
+        function CountDownTimer(dt, id, trx_id)
         {
-            var end = new Date('{{$consult->session_end}}');
-            var start = new Date('{{$consult->session_start}}');
+            var end = new Date('{{$consult->session_end}}');    
             var _second = 1000;
             var _minute = _second * 60;
             var _hour = _minute * 60;
@@ -32,18 +31,13 @@
             var timer;
             function showRemaining() {
                 var now = new Date();
-                var distance = end - now;
-                var startDistance = now - start;
+                var distance = end - now;                
                 if (distance < 0) {
-
-                    clearInterval(timer);
-                    document.getElementById(id).innerHTML = '<b>Session End</b> ';
+                    clearInterval(timer);                    
+                    alert('Your session has end.');
+                    window.location.href = "/transaction-history/detail/"+trx_id;
                     return;
-                } else if (startDistance < 0) {
-                    clearInterval(timer);
-                    document.getElementById(id).innerHTML = '<b>Session Comming Soon</b> ';
-                    return;
-                }
+                } 
                 var days = Math.floor(distance / _day);
                 var hours = Math.floor((distance % _day) / _hour);
                 var minutes = Math.floor((distance % _hour) / _minute);
