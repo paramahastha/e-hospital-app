@@ -26,28 +26,21 @@ class DatabaseSeeder extends Seeder
             [
                 'slug' => 'admin',
                 'name' => 'Admin',
-                'permissions' => '{"platform.main": "1", "platform.index": "1", "platform.systems.roles": "1", "platform.systems.users": "1", "platform.doctor.management": "1", "platform.systems.attachment": "1", "platform.systems.user.activity": "1", "platform.transaction.management": "1"}',
+                'permissions' => '{"platform.main": true, "platform.index": true, "platform.systems.roles": true, "platform.systems.users": true, "platform.doctor.management": true, "platform.systems.attachment": true, "platform.systems.user.activity": true, "platform.transaction.management": true, "platform.consultation.management": false}',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 'slug' => 'doctor',
                 'name' => 'Doctor',
-                'permissions' => '{"platform.main": "1", "platform.index": "1", "platform.systems.roles": "0", "platform.systems.users": "0", "platform.doctor.management": "0", "platform.systems.attachment": "0"}',
+                'permissions' => '{"platform.main": "1", "platform.index": "1", "platform.systems.roles": "0", "platform.systems.users": "0", "platform.doctor.management": "0", "platform.systems.attachment": "0", "platform.consultation.management": "1"}',
                 'created_at' => now(),
                 'updated_at' => now()
-            ],
-            [
-                'slug' => 'staff',
-                'name' => 'Staff',
-                'permissions' => '{"platform.main": "1", "platform.index": "1", "platform.systems.roles": "0", "platform.systems.users": "0", "platform.doctor.management": "1", "platform.systems.attachment": "0"}',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
+            ],         
             [
                 'slug' => 'patient',
                 'name' => 'Patient',
-                'permissions' => '{"platform.main": "0", "platform.index": "0", "platform.systems.roles": "0", "platform.systems.users": "0", "platform.doctor.management": "0", "platform.systems.attachment": "0"}',
+                'permissions' => '{"platform.main": "0", "platform.index": "0", "platform.systems.roles": "0", "platform.systems.users": "0", "platform.doctor.management": "0", "platform.systems.attachment": "0", "platform.consultation.attachment": "0"}',
                 'created_at' => now(),
                 'updated_at' => now()
             ]

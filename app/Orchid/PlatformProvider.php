@@ -28,9 +28,9 @@ class PlatformProvider extends OrchidServiceProvider
     public function registerMainMenu(): array
     {
         return [
-            Menu::make('Dashboard')
-                ->icon('monitor')
-                ->route('platform.main'),
+            // Menu::make('Dashboard')
+            //     ->icon('monitor')
+            //     ->route('platform.main'),
                 // ->title('Navigation')
                 // ->badge(function () {
                 //     return 6;
@@ -51,6 +51,10 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.transaction.management')
                 ->permission('platform.transaction.management'),
             
+            Menu::make('Consultation Management')
+                ->icon('speech')            
+                ->route('platform.consultation.management')
+                ->permission('platform.consultation.management'),
 
             Menu::make('Doctor Management')
                 ->icon('user')            
@@ -139,6 +143,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->addPermission('platform.systems.users', __('Users'))
                 ->addPermission('platform.systems.user.activity', __('User Activity'))
                 ->addPermission('platform.doctor.management', __('Doctor Management'))
+                ->addPermission('platform.consultation.management', __('Consultation Management'))
                 ->addPermission('platform.transaction.management', __('Transaction Management')),
         ];
     }

@@ -74,7 +74,7 @@ class RegisterController extends Controller
         if ($user) {
             RoleUser::create([
                 'user_id' => $user->id,
-                'role_id' => '4'
+                'role_id' => '3'
             ]);
         }
 

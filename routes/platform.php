@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\ConsultationManagement\ConsultationEditScreen;
+use App\Orchid\Screens\ConsultationManagement\ConsultationListScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
 use App\Orchid\Screens\Examples\ExampleFieldsAdvancedScreen;
@@ -183,6 +185,23 @@ Route::screen('transaction-management/{transaction}/edit', TransactionEditScreen
     return $trail
         ->parent('platform.transaction.management')
         ->push(__('Transaction Management'), route('platform.transaction.management.edit', $user));
+});
+
+// Platform > System > Transaction Management
+Route::screen('consultation-management', ConsultationListScreen::class)
+    ->name('platform.consultation.management')
+    ->breadcrumbs(function (Trail $trail) {
+        return $trail
+            ->parent('platform.index')
+            ->push(__('Consultation Management'), route('platform.consultation.management'));
+    });
+
+Route::screen('consultation-management/{consultation}/edit', ConsultationEditScreen::class)
+->name('platform.consultation.management.edit')
+->breadcrumbs(function (Trail $trail, $user) {
+    return $trail
+        ->parent('platform.consultation.management')
+        ->push(__('Consultation Management'), route('platform.consultation.management.edit', $user));
 });
 
 

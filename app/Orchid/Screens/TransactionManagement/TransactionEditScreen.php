@@ -19,12 +19,10 @@ use Orchid\Support\Facades\Toast;
 
 class TransactionEditScreen extends Screen
 {
-     /**
+    /**
      * @var Transaction
      */
     public $transaction;
-
-    
 
     /**
      * Query data.
@@ -59,9 +57,9 @@ class TransactionEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [            
-            Button::make(__('Save'))
+            Button::make(__('Back'))
                 ->icon('check')
-                ->method('save'),
+                ->method('back'),
         ];
     }
 
@@ -123,12 +121,8 @@ class TransactionEditScreen extends Screen
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(Transaction $user, Request $request)
-    {
-     
-        UserActivityHelper::record('Edit Transaction', UserActivityHelper::$TRANSACTION_MANAGEMENT);
-        Toast::info(__('Transaction was saved.'));
-
+    public function back()
+    {        
         return redirect()->route('platform.transaction.management');
     }
 
