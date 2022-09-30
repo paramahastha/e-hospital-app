@@ -10,21 +10,18 @@ use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Cropper;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Label;
+use Orchid\Screen\Fields\Picture;
 use Orchid\Screen\Fields\Select;
+use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Layouts\Rows;
 use Orchid\Screen\TD;
 
 class TransactionEditLayout extends Rows
 {
-    /**
-     * Data source.
-     *
-     * The name of the key to fetch it from the query.
-     * The results of which will be elements of the table.
-     *
-     * @var string
+     /**
+     * @var Transaction|null
      */
-    protected $target = 'transactions';
+    private $transaction;
 
     /**
      * Get the fields elements to be displayed.
@@ -33,21 +30,27 @@ class TransactionEditLayout extends Rows
      */
     protected function fields(): iterable
     {        
+        $this->transaction = $this->query->get('transaction');
+
+        // dd($this->transaction->proof_of_payment);
         return [        
             Label::make('transaction.code')                                                            
                 ->title(__('Transaction Number')),            
 
             Label::make('transaction.status')                                       
-                ->title('Status'),                
-            
-            Label::make('transaction.payment_status')                                                                                         
-                ->title(__('Payment Status')),
-
-            Label::make('transaction.payment_reject_reason')
-                ->title(__('Payment Reject Reason')),
+                ->title('Status'),        
                 
             Label::make('transaction.created_at')                          
                 ->title(__('Date')),
+            
+            Picture::make('transaction.proof_of_payment')                                
+                ->title(__('Proof of Payment')),
+
+            Label::make('transaction.payment_status')
+                ->title(__('Payment Status')),
+
+            TextArea::make('transaction.payment_reject_reason')
+                ->title(__('Payment Reject Reason')),                        
         ];
     }
 }

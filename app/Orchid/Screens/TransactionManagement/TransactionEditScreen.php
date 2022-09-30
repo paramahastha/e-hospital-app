@@ -84,7 +84,20 @@ class TransactionEditScreen extends Screen
     {        
         return [
             Layout::block(TransactionEditLayout::class)
-                ->title(__("Transaction Information")),
+                ->title(__("Transaction Information"))
+                ->commands([                    
+                    Button::make(__('Approve'))
+                        ->disabled($this->transaction->payment_status != 'waiting')
+                        ->type(Color::SUCCESS())
+                        ->icon('check')
+                        ->method('approvePayment'),
+                        
+                    Button::make(__('Reject'))
+                        ->disabled($this->transaction->payment_status != 'waiting')
+                        ->type(Color::DANGER())
+                        ->icon('close')
+                        ->method('rejectPayment'),
+                ]),
                 
             Layout::block(TransactionConsultEditLayout::class)
                 ->title(__("Consultation Information"))
@@ -172,6 +185,34 @@ class TransactionEditScreen extends Screen
         UserActivityHelper::record('Confirm Consultation', UserActivityHelper::$TRANSACTION_MANAGEMENT);
             
         Toast::info(__('Consultation was confirmed'));
+
+        return redirect()->route('platform.transaction.management');
+    }
+
+    public function approvePayment(Transaction $transaction, Request $request)
+    {                               
+        $transaction->status = 'consult_process'; 
+        $transaction->payment_status = 'approve'; 
+        $transaction->payment_reject_reason = '';
+        $transaction->save();
+
+        UserActivityHelper::record('Approve Payment Transaction', UserActivityHelper::$TRANSACTION_MANAGEMENT);
+            
+        Toast::info(__('Payment was approved'));
+
+        return redirect()->route('platform.transaction.management');
+    }
+
+    public function rejectPayment(Transaction $transaction, Request $request)
+    {                               
+        $transaction->status = 'payment_process'; 
+        $transaction->payment_status = 'reject';        
+        $transaction->payment_reject_reason = $request->get('transaction')['payment_reject_reason'];
+        $transaction->save();
+
+        UserActivityHelper::record('Reject Payment Transaction', UserActivityHelper::$TRANSACTION_MANAGEMENT);
+            
+        Toast::info(__('Payment was rejected'));
 
         return redirect()->route('platform.transaction.management');
     }
