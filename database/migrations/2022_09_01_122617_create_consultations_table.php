@@ -15,6 +15,7 @@ class CreateConsultationsTable extends Migration
     {
         Schema::create('consultations', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('patient_id')->unsigned();  
             $table->string('name')->nullable();
             $table->timestamp('session_start');
             $table->timestamp('session_end');

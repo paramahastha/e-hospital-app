@@ -40,7 +40,7 @@ class ConsultController extends Controller
         
         $selectedDate = date('Y-m-d H:i:s', strtotime($request->get('consultDate')));
         
-        $consult = Consultation::with('consultUsers')->whereRaw("DATE_FORMAT(session_start, '%Y-%m-%d') = 
+        $consult = Consultation::with('consultUsers')->where('patient_id', $currUser->id)->whereRaw("DATE_FORMAT(session_start, '%Y-%m-%d') = 
             '".$request->get('consultDate')."'")->whereHas('consultUsers', function($query) use ($user) {                
                 $currUser = Auth::user();   
 
@@ -77,6 +77,7 @@ class ConsultController extends Controller
         } 
         
         $consult = new Consultation();        
+        $consult->patient_id = $currUser->id;
         $consult->session_start = $selectedDate;
         $consult->session_end = $selectedDate;
         $consult->status = 'init';
@@ -156,6 +157,11 @@ class ConsultController extends Controller
             ->where('user_id', $user->id)->first();
 
         return view('consult.chat', compact('consult', 'transaction'));
+    }
+
+    public function consultChatDoctor(Consultation $consult, Request $request) {
+
+        return view('consult.doctor.chat', compact('consult'));
     }
 
     public function fetchMessages(Request $request)

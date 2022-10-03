@@ -1,7 +1,7 @@
 <!-- resources/views/consult/chat.blade.php -->
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="container mt-5">
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -9,13 +9,13 @@
                    <div class="d-flex align-items-center">
                    {{ __('Consultation') }}
                    </div>
-                </div>       
+                </div>   
                 <div class="col-md-6 mt-2 mb-2">
-                    <a href="{{ route('transaction.history.detail', ['transaction' => $transaction->id]) }}" 
+                    <a href="{{ route('platform.consultation.management.detail', ['consultation' => $consult->id]) }}" 
                         class="btn btn-secondary float-end">
                        Back
                     </a>
-                 </div>       
+                 </div>               
              </div>                        
         </div>
         <div class="card-body">
@@ -26,8 +26,8 @@
         </div>
     </div>
     <script>
-        CountDownTimer('{{$consult->session_start}}', 'countdown', '{{$transaction->id}}');
-        function CountDownTimer(dt, id, trx_id)
+        CountDownTimer('{{$consult->session_start}}', 'countdown', '{{$consult->id}}');
+        function CountDownTimer(dt, id, consultId)
         {
             var end = new Date('{{$consult->session_end}}');    
             var _second = 1000;
@@ -40,8 +40,8 @@
                 var distance = end - now;                
                 if (distance < 0) {
                     clearInterval(timer);                    
-                    alert('Your session has end.');
-                    window.location.href = "/transaction-history/detail/"+trx_id;
+                    alert('Your session has end.');                    
+                    window.location.href = `/admin/consultation-management/${consultId}/detail`;
                     return;
                 } 
                 var days = Math.floor(distance / _day);
@@ -57,6 +57,7 @@
             }
             timer = setInterval(showRemaining, 1000);
         }
+        $("#main-navbar").addClass("hide");
     </script>
     <div id="countdown"> 
 </div>

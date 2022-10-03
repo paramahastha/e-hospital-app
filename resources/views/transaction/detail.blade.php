@@ -43,9 +43,15 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <p>Code : {{$doctor->userInfo->code}}</p>
-                                                <p>Name : {{$doctor->name}}</p></div>    
-                                            <div class="col-md-6">
-                                                <p>Position : {{$doctor->userInfo->position}}</p>                                                
+                                                <p>Name : {{$doctor->name}}</p>
+                                                <p>Position : {{$doctor->userInfo->position}}</p>
+                                            </div>    
+                                            <div class="col-md-6">                                                
+                                                <p>Consult Date : {{date("Y-m-d", strtotime($consult->session_start))}}</p>
+                                                @if ($consult->status == 'confirm')
+                                                    <p>Consult Duration : {{$doctor->consultRule->duration}} minute</p>                                                
+                                                    <p>Start at : {{date("H:i", strtotime($consult->session_start))}}</p>                                                    
+                                                @endif  
                                             </div>    
                                         </div>       
                                         <div class="row mt-3">
@@ -86,9 +92,9 @@
                                                 <p>Gender : {{$patient->userInfo->gender}}</p>
                                                 <p>Phone : {{$patient->userInfo->phone_number}}</p>
                                                 <p>Address : {{$patient->userInfo->address}}</p>
-                                                <a href="" class="btn btn-primary">
+                                                {{-- <a href="" class="btn btn-primary">
                                                     Medical Record
-                                                </a>
+                                                </a> --}}
                                             </div>    
                                         </div>                                                                                                              
                                     </div>
@@ -120,7 +126,11 @@
                                                             $transaction->consultation->status == 'confirm' &&
                                                             ($transaction->payment_status == 'init' ||
                                                             $transaction->payment_status == 'reject') ? '' : 'disabled'}}>
-                                                            <button type="submit" name="submit" class="btn btn-primary mt-4">
+                                                            <button type="submit" name="submit" class="btn btn-primary mt-4" 
+                                                            {{$transaction->status == 'payment_process' ||
+                                                                $transaction->consultation->status == 'confirm' &&
+                                                                ($transaction->payment_status == 'init' ||
+                                                                $transaction->payment_status == 'reject') ? '' : 'disabled'}}>
                                                                 Upload Files
                                                             </button>
                                                         </form>

@@ -196,12 +196,12 @@ Route::screen('consultation-management', ConsultationListScreen::class)
             ->push(__('Consultation Management'), route('platform.consultation.management'));
     });
 
-Route::screen('consultation-management/{consultation}/edit', ConsultationEditScreen::class)
-->name('platform.consultation.management.edit')
+Route::screen('consultation-management/{consultation}/detail', ConsultationEditScreen::class)
+->name('platform.consultation.management.detail')
 ->breadcrumbs(function (Trail $trail, $user) {
     return $trail
         ->parent('platform.consultation.management')
-        ->push(__('Consultation Management'), route('platform.consultation.management.edit', $user));
+        ->push(__('Consultation Management'), route('platform.consultation.management.detail', $user));
 });
 
 

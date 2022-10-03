@@ -52,7 +52,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->permission('platform.transaction.management'),
             
             Menu::make('Consultation Management')
-                ->icon('speech')            
+                ->icon('bubbles')            
                 ->route('platform.consultation.management')
                 ->permission('platform.consultation.management'),
 

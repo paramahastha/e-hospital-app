@@ -3,28 +3,29 @@
 namespace App\Orchid\Screens\ConsultationManagement;
 
 use App\Models\Consultation;
+use App\Orchid\Layouts\ConsultationManagement\ConsultationListLayout;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Screen;
 
 class ConsultationListScreen extends Screen
 {
-    /**
-     * @var Consultation
-     */
-    public $consultation;
 
     /**
      * Query data.
      *
      * @return array
      */
-    public function query(Consultation $consultation): iterable
-    {            
-        dd($consultation);
+    public function query(): iterable
+    {                           
+        $consultations = Consultation::whereHas('consultUsers', function($query) {
 
-        return [                        
-            'consultation'       => $consultation,
-            'patient'            => $consultation->user('patient'),
-            'doctor'             => $consultation->user('doctor'),
+            $currUser = Auth::user();
+            return $query->where('user_id',$currUser->id);
+
+        })->get(); 
+        
+        return [
+            'consultation' => $consultations,
         ];
     }
 
@@ -36,6 +37,26 @@ class ConsultationListScreen extends Screen
     public function name(): ?string
     {
         return 'ConsultationListScreen';
+    }
+
+    /**
+     * Display header description.
+     *
+     * @return string|null
+     */
+    public function description(): ?string
+    {
+        return 'List of consultation data';
+    }
+
+    /**
+     * @return iterable|null
+     */
+    public function permission(): ?iterable
+    {
+        return [
+            'platform.consultation.management',
+        ];
     }
 
     /**
@@ -55,6 +76,8 @@ class ConsultationListScreen extends Screen
      */
     public function layout(): iterable
     {
-        return [];
+        return [
+            ConsultationListLayout::class,
+        ];
     }
 }

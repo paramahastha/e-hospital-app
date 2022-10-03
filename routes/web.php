@@ -34,6 +34,9 @@ Route::post('/transaction-history/detail/{transaction}/download-payment', [App\H
 Route::get('/consult/detail/chat/{consult}', [App\Http\Controllers\ConsultController::class, 'consultChat'])
     ->middleware('check.patient.session')
     ->name('consult.detail.chat');
+Route::get('/consult-doctor/detail/chat/{consult}', [App\Http\Controllers\ConsultController::class, 'consultChatDoctor'])
+    ->middleware('check.patient.session')
+    ->name('consult.doctor.detail.chat');
 // Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index']);
 Route::post('/consult/messages/list', [App\Http\Controllers\ConsultController::class, 'fetchMessages']);
 Route::post('/consult/messages/send', [App\Http\Controllers\ConsultController::class, 'sendMessage']);
