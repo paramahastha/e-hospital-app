@@ -9,6 +9,8 @@ use App\Orchid\Layouts\TransactionManagement\TransactionDoctorEditLayout;
 use App\Orchid\Layouts\TransactionManagement\TransactionEditLayout;
 use App\Orchid\Layouts\TransactionManagement\TransactionPatientEditLayout;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
@@ -189,6 +191,16 @@ class TransactionEditScreen extends Screen
         $transaction->payment_status = 'approve'; 
         $transaction->payment_reject_reason = '';
         $transaction->save();
+
+        $consultUrl = env('APP_URL').'/consult/detail/chat/'.$transaction->consultation->id;
+        $contents = 'Consult Date & Link : '.date("Y-m-d H:i", strtotime($transaction->consultation->session_start)).' 
+            | '.$consultUrl;
+
+        Mail::raw($contents, function (Message $message) use ($transaction) {
+            $message->from('efatimah@email.com');
+            $message->subject('E-Fatimah - Your payment is already approved!');    
+            $message->to($transaction->user->email);          
+        });
 
         UserActivityHelper::record('Approve Payment Transaction', UserActivityHelper::$TRANSACTION_MANAGEMENT);
             
