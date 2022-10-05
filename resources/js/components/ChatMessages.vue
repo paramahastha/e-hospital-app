@@ -27,11 +27,11 @@ export default {
   created() {
       this.fetchMessages();
 
-      window.Echo.private('chat').listen('MessageSent', (e) => {            
+      window.Echo.private('chat').listen('MessageSent', (e) => {          
           this.$emit('addmessage', {
               message: e.message.message,
               user: e.user,
-              consult: e.consult
+              consult: this.consult
           });
       });
   },

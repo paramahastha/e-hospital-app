@@ -5319,7 +5319,7 @@ __webpack_require__.r(__webpack_exports__);
       _this.$emit('addmessage', {
         message: e.message.message,
         user: e.user,
-        consult: e.consult
+        consult: _this.consult
       });
     });
   },
