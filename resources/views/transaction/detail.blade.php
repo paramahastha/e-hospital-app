@@ -99,6 +99,16 @@
                                         </div>                                                                                                              
                                     </div>
                                 </div>
+                                @if(!is_null($consult->medical_record) && $consult->medical_record != "")                                
+                                <div class="card mt-5">                            
+                                    <div class="card-header">
+                                        Medical Record
+                                    </div>
+                                    <div class="card-body">                                        
+                                        {!! $consult->medical_record !!}
+                                    </div>
+                                </div>
+                                @endif  
                             </div>
                         </div>
                         <br>

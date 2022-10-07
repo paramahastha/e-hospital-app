@@ -31,8 +31,7 @@ class TransactionEditLayout extends Rows
     protected function fields(): iterable
     {        
         $this->transaction = $this->query->get('transaction');
-
-        // dd($this->transaction->proof_of_payment);
+        
         return [        
             Label::make('transaction.code')                                                            
                 ->title(__('Transaction Number')),            

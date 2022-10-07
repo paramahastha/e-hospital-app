@@ -6,8 +6,9 @@ use App\Helper\UserActivityHelper;
 use App\Models\Consultation;
 use App\Models\Transaction;
 use App\Orchid\Layouts\ConsultationManagement\ConsultationEditLayout;
+use App\Orchid\Layouts\ConsultationManagement\ConsultationMedicalRecordLayout;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
 use Orchid\Support\Color;
@@ -71,7 +72,13 @@ class ConsultationEditScreen extends Screen
     public function layout(): iterable
     {
         $consultValidation = (strtotime(date("Y-m-d H:i:s")) > strtotime($this->consultation->session_start)
-            && strtotime(date("Y-m-d H:i:s")) < strtotime($this->consultation->session_end));            
+            && strtotime(date("Y-m-d H:i:s")) < strtotime($this->consultation->session_end)); 
+            
+        $patient = $this->consultation->user('patient');
+
+        $transaction = Transaction::with('consultation')
+            ->where('consultation_id', $this->consultation->id)
+            ->where('user_id', $patient->id)->first();
 
         return [
             Layout::block(ConsultationEditLayout::class)
@@ -82,6 +89,16 @@ class ConsultationEditScreen extends Screen
                         ->type(Color::PRIMARY())
                         ->icon('bubbles')
                         ->method('startConsultSession'),
+                ),
+
+            Layout::block(ConsultationMedicalRecordLayout::class)
+                ->title(__("Medical Record Information"))
+                ->commands(
+                    Button::make(__('Submit'))
+                        ->disabled($transaction->status == 'done')
+                        ->type(Color::PRIMARY())
+                        ->icon('doc')
+                        ->method('submitMedicalRecord'),
                 ),
         ];
     }
@@ -98,5 +115,28 @@ class ConsultationEditScreen extends Screen
         }               
          
         return redirect()->route('consult.doctor.detail.chat', ['consult' => $consult->id]);
+    }
+
+    public function submitMedicalRecord(Consultation $consult, Request $request)
+    {                                       
+        $request->validate([
+            'consultation.medical_record' => 'required'
+        ]);
+        
+        $patient = $consult->user('patient');
+        
+        $transaction = Transaction::with('consultation')
+            ->where('consultation_id', $consult->id)
+            ->where('user_id', $patient->id)->first();
+
+        $transaction->status = 'done';
+        $consult->medical_record = $request->get('consultation')['medical_record'];         
+        $transaction->save();
+        $consult->save();
+
+        UserActivityHelper::record('Doctor Submit Medical Record', UserActivityHelper::$CONSULTATION_MANAGEMENT);
+        
+        Toast::info(__('Medical Record was submitted'));
+        
     }
 }

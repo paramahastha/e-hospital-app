@@ -19,7 +19,8 @@ class Consultation extends Model
         'patient_id',
         'session_start',
         'session_end',
-        'status'
+        'status',
+        'medical_record'
     ];
 
     /**
