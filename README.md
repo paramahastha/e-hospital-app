@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## How to Setup
+## How to Setups
 
 - Create Database : e-fatimah-app
 - Clone your project
