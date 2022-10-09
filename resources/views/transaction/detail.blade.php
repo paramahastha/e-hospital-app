@@ -65,7 +65,7 @@
                                             </div>    
                                             <div class="col-md-6">
                                                 @if($transaction->payment_status == 'approve' && $transaction->status == 'done')
-                                                    <a href="" class="btn btn-primary float-end" >
+                                                    <a onclick="window.print()"class="btn btn-primary float-end" >
                                                         E-Recipe
                                                     </a>
                                                 @endif
@@ -104,8 +104,19 @@
                                     <div class="card-header">
                                         Medical Record
                                     </div>
+                                    <div class="card-body">               
+                                       <p>{{strip_tags($consult->medical_record)}}</p>
+                                    </div>
+                                </div>
+                                @endif  
+
+                                @if(!is_null($consult->medical_record) && $consult->medical_record != "")                                
+                                <div class="card mt-5">                            
+                                    <div class="card-header">
+                                        Receipt Record
+                                    </div>
                                     <div class="card-body">                                        
-                                        {!! $consult->medical_record !!}
+                                       <p>{{   strip_tags($consult->receipe_record)}}</p>
                                     </div>
                                 </div>
                                 @endif  

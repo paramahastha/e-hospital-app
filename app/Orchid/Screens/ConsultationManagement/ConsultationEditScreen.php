@@ -7,6 +7,7 @@ use App\Models\Consultation;
 use App\Models\Transaction;
 use App\Orchid\Layouts\ConsultationManagement\ConsultationEditLayout;
 use App\Orchid\Layouts\ConsultationManagement\ConsultationMedicalRecordLayout;
+use App\Orchid\Layouts\ConsultationManagement\ConsultationReceipeRecordLayout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
@@ -93,13 +94,30 @@ class ConsultationEditScreen extends Screen
 
             Layout::block(ConsultationMedicalRecordLayout::class)
                 ->title(__("Medical Record Information"))
-                ->commands(
-                    Button::make(__('Submit'))
-                        ->disabled($transaction->status == 'done')
-                        ->type(Color::PRIMARY())
-                        ->icon('doc')
-                        ->method('submitMedicalRecord'),
-                ),
+                // ->commands(
+                //     Button::make(__('Submit'))
+                //         // ->disabled($transaction->status == 'done')
+                //         ->type(Color::PRIMARY())
+                //         ->icon('doc')
+                //         ->method('submitMedicalRecord'),
+                // )
+                ,
+
+
+            Layout::block(ConsultationReceipeRecordLayout::class)
+            ->title(__("Reciepe Record Information"))
+            ->commands(
+                Button::make(__('Submit'))
+                    // ->disabled($transaction->status == 'done')
+                    ->type(Color::PRIMARY())
+                    ->icon('doc')
+                    ->method('submitMedicalRecord'),
+            ),
+
+
+
+
+                
         ];
     }
 
@@ -120,7 +138,8 @@ class ConsultationEditScreen extends Screen
     public function submitMedicalRecord(Consultation $consult, Request $request)
     {                                       
         $request->validate([
-            'consultation.medical_record' => 'required'
+            'consultation.medical_record' => 'required',
+            'consultation.receipe_record' => 'required'
         ]);
         
         $patient = $consult->user('patient');
@@ -130,13 +149,14 @@ class ConsultationEditScreen extends Screen
             ->where('user_id', $patient->id)->first();
 
         $transaction->status = 'done';
-        $consult->medical_record = $request->get('consultation')['medical_record'];         
+        $consult->medical_record = $request->get('consultation')['medical_record'];   
+        $consult->receipe_record = $request->get('consultation')['receipe_record'];       
         $transaction->save();
         $consult->save();
 
         UserActivityHelper::record('Doctor Submit Medical Record', UserActivityHelper::$CONSULTATION_MANAGEMENT);
         
-        Toast::info(__('Medical Record was submitted'));
+        Toast::info(__('Medical Record and Receipe was submitted'));
         
     }
 }

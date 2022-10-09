@@ -20,7 +20,8 @@ class Consultation extends Model
         'session_start',
         'session_end',
         'status',
-        'medical_record'
+        'medical_record',
+        'receipe_record'
     ];
 
     /**

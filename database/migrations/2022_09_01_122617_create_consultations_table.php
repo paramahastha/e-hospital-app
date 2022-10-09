@@ -17,8 +17,8 @@ class CreateConsultationsTable extends Migration
             $table->increments('id');
             $table->integer('patient_id')->unsigned();  
             $table->string('name')->nullable();
-            $table->timestamp('session_start');
-            $table->timestamp('session_end');
+            $table->timestamp('session_start')->nullable();
+            $table->timestamp('session_end')->nullable();
             $table->enum('status', ['init','confirm','ongoing','done']);
             $table->timestamps();
         });
