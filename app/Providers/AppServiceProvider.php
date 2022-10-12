@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,5 +27,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app['blade.compiler']->directive('money', function ($amount) {            
             return "<?php echo 'Rp' . number_format($amount, 0); ?>";
         });
+
+        if($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
