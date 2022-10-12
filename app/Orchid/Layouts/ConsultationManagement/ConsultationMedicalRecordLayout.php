@@ -20,8 +20,12 @@ class ConsultationMedicalRecordLayout extends Rows
     {
         return [
             Quill::make('consultation.medical_record')                
-                ->required()
-                ->title(__('Medical Record')),    
+                // ->required()
+                ->title(__('Medical Record')),   
+                 
+            Quill::make('consultation.receipe_record')                
+                // ->required()
+                ->title(__('Receipe Record')),   
         ];
     }
 }

@@ -94,30 +94,15 @@ class ConsultationEditScreen extends Screen
 
             Layout::block(ConsultationMedicalRecordLayout::class)
                 ->title(__("Medical Record Information"))
-                // ->commands(
-                //     Button::make(__('Submit'))
-                //         // ->disabled($transaction->status == 'done')
-                //         ->type(Color::PRIMARY())
-                //         ->icon('doc')
-                //         ->method('submitMedicalRecord'),
-                // )
-                ,
-
-
-            Layout::block(ConsultationReceipeRecordLayout::class)
-            ->title(__("Reciepe Record Information"))
-            ->commands(
-                Button::make(__('Submit'))
-                    // ->disabled($transaction->status == 'done')
-                    ->type(Color::PRIMARY())
-                    ->icon('doc')
-                    ->method('submitMedicalRecord'),
+                ->commands(
+                    Button::make(__('Submit'))
+                        ->disabled($transaction->status != 'done')
+                        ->type(Color::PRIMARY())
+                        ->icon('doc')
+                        ->method('submitMedicalRecord'),
             ),
 
-
-
-
-                
+   
         ];
     }
 
